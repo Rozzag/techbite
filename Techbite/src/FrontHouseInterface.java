@@ -1,3 +1,10 @@
+import java.util.Date;
+
+/**
+ * @author Adam Rezzag Salem
+ * @version 1.0
+ * @since 16th February 2024
+ */
 public interface FrontHouseInterface {
 
     /*
@@ -5,8 +12,17 @@ public interface FrontHouseInterface {
     the orders made and the total amount made in the evening
      */
 
-    // I may change this to reflect whether a collection class is more suitable to be used to access the customer details
-    public Customer getCustomer(String name, String phoneNumber);
+    /**
+     *
+     * @param name
+     * @param phoneNumber
+     * @return returns a Customer object
+     */
+    public Customer getCustomer(int customerId);
 
-    public Booking getBooking(int bookingId);
+    public Customers getAllCustomers();
+
+    public Order getOrder(int orderId);
+
+    public DailySale getDailySale(Date date);
 }

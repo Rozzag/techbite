@@ -6,13 +6,13 @@ public class Customer {
     private int customerId;
     private boolean payCard;
     private String phoneNumber;
-    private String cardNumber;
+    private int cardNumber;
     private Date expiryDate;
 
 
     // staff member takes all the information from the customer when first registering to the restaurant
     public Customer(String name, String phoneNumber, boolean payCard, int customerId,
-                    String cardNumber, Date expiryDate) {
+                    int cardNumber, Date expiryDate) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.payCard = payCard;
@@ -29,7 +29,7 @@ public class Customer {
     }
 
     // customer may want to change their card payment preferences
-    public boolean updateCardDetails(String cardNumber, Date expiryDate){
+    public boolean updateCardDetails(int cardNumber, Date expiryDate){
 
         this.cardNumber = cardNumber;
         this.expiryDate = expiryDate;
@@ -65,7 +65,7 @@ public class Customer {
         return phoneNumber;
     }
 
-    public String getCardNumber() {
+    public int getCardNumber() {
         return cardNumber;
     }
 

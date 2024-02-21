@@ -1,13 +1,17 @@
 package management;
 
+import java.util.List;
+
 public interface ManagementInterface {
 
     public Order getOrder(int orderId);
 
-    public String[] getDishes(int orderId);
+    public List<String> getPopularDishes();
 
     public double getAmount(int orderId);
 
-    public int getCustomers(int orderId);
+    public double getTotal(String date);
+
+    public int getCustomers(int bookingId);
 
 }

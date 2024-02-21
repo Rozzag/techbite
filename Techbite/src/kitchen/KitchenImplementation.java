@@ -1,9 +1,11 @@
 package kitchen;
 
+import java.util.List;
+
 public class KitchenImplementation implements KitchenInterface{
 
     @Override
-    public String[] getDishes(int orderId) {
+    public List<String> getDishes(int orderId) {
         return null;
     }
 

@@ -1,8 +1,10 @@
 package kitchen;
 
+import java.util.List;
+
 public interface KitchenInterface {
 
-    public String[] getDishes(int orderId);
+    public List<String> getDishes(int orderId);
 
     public int getQuantity(int orderId);
 

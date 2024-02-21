@@ -11,13 +11,15 @@ public class Order {
         private Date orderDate;
         private List<String> specialRequest;
 
-    public Order(int tableNumber) {
-        this.tableNumber = tableNumber;
+    public Order(int orderId) {
+        Random random = new Random();
+        this.tableNumber = random.nextInt(15);
         generateId();
     }
 
-    public Order(int tableNumber, List<String> specialRequest) {
-        this.tableNumber = tableNumber;
+    public Order(int orderId, List<String> specialRequest) {
+        Random random = new Random();
+        this.tableNumber = random.nextInt(15);
         this.specialRequest = specialRequest;
         generateId();
     }

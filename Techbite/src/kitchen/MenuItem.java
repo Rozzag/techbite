@@ -1,2 +1,4 @@
-package kitchen;public class MenuItem {
+package kitchen;
+
+public class MenuItem {
 }

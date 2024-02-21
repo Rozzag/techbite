@@ -1,2 +1,4 @@
-package management;public class Connectivity {
+package management;
+
+public class Connectivity {
 }

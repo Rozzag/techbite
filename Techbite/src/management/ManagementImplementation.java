@@ -27,12 +27,12 @@ public class ManagementImplementation implements ManagementInterface {
     }
 
     @Override
-    public List<String> getPopularDishes() {
+    public List<String> getPopularDishes() throws SQLException {
 
         // returning all the dishes for a specific order
+        Connectivity conn = new Connectivity();
 
         try {
-            Connectivity conn = new Connectivity();
 
             Statement stm = conn.connect().createStatement();
 
@@ -56,17 +56,19 @@ public class ManagementImplementation implements ManagementInterface {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            conn.connect().close();
         }
     }
 
     @Override
-    public double getAmount(int orderId) {
+    public double getAmount(int orderId) throws SQLException {
         // this is done by querying the Payment table and totalling the payments for the day
 
         double amount = 0;
 
+        Connectivity conn = new Connectivity();
         try {
-          Connectivity conn = new Connectivity();
 
           Statement stm = conn.connect().createStatement();
 
@@ -80,16 +82,19 @@ public class ManagementImplementation implements ManagementInterface {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            conn.connect().close();
         }
         return amount;
     }
 
     @Override
-    public double getTotal(String date) {
+    public double getTotal(String date) throws SQLException {
 
         double total = 0;
+
+        Connectivity conn = new Connectivity();
         try {
-            Connectivity conn = new Connectivity();
 
 
             // define the string which will total the amount of money made in a day
@@ -107,17 +112,20 @@ public class ManagementImplementation implements ManagementInterface {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            conn.connect().close();
         }
         return total;
     }
 
     @Override
-    public int getCustomers(int bookingId) {
+    public int getCustomers(int bookingId) throws SQLException {
 
         // return the number of customers being served for a given order
         int total = 0;
+
+        Connectivity conn = new Connectivity();
         try {
-            Connectivity conn = new Connectivity();
 
 
             // define the string which will total the amount of money made in a day
@@ -136,6 +144,8 @@ public class ManagementImplementation implements ManagementInterface {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            conn.connect().close();
         }
         return total;
 

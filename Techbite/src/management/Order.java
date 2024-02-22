@@ -5,6 +5,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * @author Adam Rezzag Salem
+ * @date 22nd February 2024
+ * @description This gives the details of a guest's order
+ */
 public class Order {
 
         private int orderId;

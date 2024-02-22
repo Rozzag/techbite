@@ -17,7 +17,7 @@ public class KitchenImplementation implements KitchenInterface{
     public Map<String, Integer> getDishesAndQuantity(int orderId) throws SQLException {
 
         // returning the top 5 most popular dishes
-        management.Connectivity conn = new Connectivity();
+        kitchen.Connectivity conn = new Connectivity();
 
         Map<String,Integer> dishes = new HashMap<>();
 

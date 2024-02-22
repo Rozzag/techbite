@@ -2,6 +2,11 @@ package management;
 
 import java.util.Date;
 
+/**
+ * @author Adam Rezzag Salem
+ * @date 22nd February 2024
+ * @description The class booking contains all the information collected from the front house to be sent to the management
+ */
 public class Booking {
 
     /*

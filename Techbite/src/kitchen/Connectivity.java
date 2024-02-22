@@ -8,26 +8,23 @@ public class Connectivity {
     private static final String userName = "in2033t01_d";
     private static final String passWord = "9XDKGxcQhhI";
 
-    public boolean connect() throws SQLException {
-
-        boolean isConnected = false;
 
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        public Connection connect() throws SQLException {
 
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
 
             Connection connection = DriverManager.getConnection(
                     CONN_STRING, userName, passWord
             );
             System.out.println("Connection successful!");
-            isConnected = true;
 
-        return isConnected;
-    }
+            return connection;
+        }
 
     public boolean printTable(ResultSet rs) throws SQLException {
 

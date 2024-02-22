@@ -2,12 +2,22 @@ package management;
 
 import java.sql.*;
 
+/**
+ * @author Adam Rezzag Salem
+ * @date 22nd February 2024
+ * @description The class will be used to connect to the schema and retrieve date in the interface implementation
+ */
 public class Connectivity {
 
     private static final String CONN_STRING = "jdbc:mysql://server smcse-stuproj00.city.ac.uk:3306/in2033t01";
     private static final String userName = "in2033t01_d";
     private static final String passWord = "9XDKGxcQhhI";
 
+    /**
+     *
+     * @return Connection object which is used to declare statements to query the SQL database
+     * @throws SQLException
+     */
     public Connection connect() throws SQLException {
 
         try {
@@ -24,6 +34,12 @@ public class Connectivity {
         return connection;
     }
 
+    /**
+     *
+     * @param rs which is a ResultSet object that returns after the query is made
+     * @return boolean that lets us know that the connection with the database has been made successfully
+     * @throws SQLException
+     */
     public boolean printTable(ResultSet rs) throws SQLException {
 
         boolean found = false;
@@ -46,6 +62,15 @@ public class Connectivity {
         return found;
     }
 
+    /**
+     *
+     * @param stm which is created from declaring a statement using the Connection object
+     * @param tableName of type String
+     * @param columnName of type String
+     * @param columnValue of type String
+     * @return boolean value for successful querying database
+     * @throws SQLException
+     */
     public boolean selectValues(Statement stm, String tableName,
                                 String columnName, String columnValue) throws SQLException {
 
@@ -60,6 +85,15 @@ public class Connectivity {
 
     }
 
+    /**
+     *
+     * @param stm type Statement
+     * @param tableName type String
+     * @param columnNames type String[] in order to allow multiple values to be inserted
+     * @param columnValues type String[] to specify all the columns in which the values will be inserted into
+     * @return
+     * @throws SQLException
+     */
     public boolean insertValues(Statement stm, String tableName, String[] columnNames,
                                 String[] columnValues) throws SQLException {
 

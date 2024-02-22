@@ -2,6 +2,7 @@ package management;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public interface ManagementInterface {
 
@@ -14,5 +15,7 @@ public interface ManagementInterface {
     public double getTotal(String date) throws SQLException;
 
     public int getCustomers(int bookingId) throws SQLException;
+
+    public List<String> getCustomerDishes(int orderId) throws SQLException;
 
 }

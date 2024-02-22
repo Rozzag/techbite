@@ -29,7 +29,7 @@ public class ManagementImplementation implements ManagementInterface {
     @Override
     public List<String> getPopularDishes() throws SQLException {
 
-        // returning all the dishes for a specific order
+        // returning the top 5 most popular dishes
         Connectivity conn = new Connectivity();
 
         try {
@@ -149,5 +149,40 @@ public class ManagementImplementation implements ManagementInterface {
         }
         return total;
 
+    }
+
+    @Override
+    public List<String> getCustomerDishes(int orderId) throws SQLException {
+        // returning all the dishes for an order
+        Connectivity conn = new Connectivity();
+
+
+        try {
+
+            Statement stm = conn.connect().createStatement();
+
+            // the query will return all the dishes for the order ID given from the OrderDetails table
+
+            String query = ("SELECT MenuItem.name as name FROM MenuItem INNER JOIN OrderDetails ON " +
+                    "MenuItem.item_id=OrderDetails.item_id");
+
+            // execute the query
+
+            ResultSet rs = stm.executeQuery(query);
+
+            // instantiate a list of type string and add all the dishes to the list
+            List<String> dishes = null;
+            while (rs.next()) {
+                dishes.add(rs.getString(1));
+            }
+
+            // return the list
+            return dishes;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            conn.connect().close();
+        }
     }
 }

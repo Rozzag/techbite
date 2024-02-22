@@ -1,6 +1,6 @@
 package kitchen;
 
-import management.Connectivity;
+import kitchen.Connectivity;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

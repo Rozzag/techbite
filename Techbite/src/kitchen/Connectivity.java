@@ -2,6 +2,11 @@ package kitchen;
 
 import java.sql.*;
 
+/**
+ * The class will allow for the interface methods to run and connect successfully with the database from the front house
+ * @author Adam Rezzag Salem
+ * @date 22nd February 2024
+ */
 public class Connectivity {
 
     private static final String CONN_STRING = "jdbc:mysql://server smcse-stuproj00.city.ac.uk:3306/in2033t01";
@@ -9,8 +14,13 @@ public class Connectivity {
     private static final String passWord = "9XDKGxcQhhI";
 
 
-
-        public Connection connect() throws SQLException {
+    /**
+     * This will connect to the database and return an object of type Connection to then be
+     * used for querying
+     * @return Connection object
+     * @throws SQLException
+     */
+    public Connection connect() throws SQLException {
 
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
@@ -26,6 +36,12 @@ public class Connectivity {
             return connection;
         }
 
+    /**
+     * prints out a table to the console from a given query
+     * @param rs type ResultSet
+     * @return boolean
+     * @throws SQLException
+     */
     public boolean printTable(ResultSet rs) throws SQLException {
 
         boolean found = false;
@@ -48,6 +64,15 @@ public class Connectivity {
         return found;
     }
 
+    /**
+     * prints out the row of a given table with some conditions
+     * @param stm
+     * @param tableName
+     * @param columnName
+     * @param columnValue
+     * @return boolean
+     * @throws SQLException
+     */
     public boolean selectValues(Statement stm, String tableName,
                                 String columnName, String columnValue) throws SQLException {
 
@@ -62,6 +87,15 @@ public class Connectivity {
 
     }
 
+    /**
+     * allows for the insertion of values into a relation
+     * @param stm
+     * @param tableName
+     * @param columnNames
+     * @param columnValues
+     * @return boolean
+     * @throws SQLException
+     */
     public boolean insertValues(Statement stm, String tableName, String[] columnNames,
                                 String[] columnValues) throws SQLException {
 

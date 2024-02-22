@@ -6,7 +6,7 @@ import java.util.Map;
 
 public interface ManagementInterface {
 
-    public Order getOrder(int orderId);
+    public Order getOrder(int orderId) throws SQLException;
 
     public List<String> getPopularDishes() throws SQLException;
 

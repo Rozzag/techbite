@@ -1,5 +1,6 @@
 package management;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -8,7 +9,7 @@ public class Order {
 
         private int orderId;
         private int tableNumber;
-        private Date orderDate;
+        private String orderDate;
         private List<String> specialRequest;
 
     public Order(int orderId) {
@@ -17,9 +18,9 @@ public class Order {
         generateId();
     }
 
-    public Order(int orderId, List<String> specialRequest) {
+    public Order(int orderId, int tableNumber, String orderDate, List<String> specialRequest) {
         Random random = new Random();
-        this.tableNumber = random.nextInt(15);
+        this.tableNumber = this.tableNumber;
         this.specialRequest = specialRequest;
         generateId();
     }

@@ -1,29 +1,48 @@
 package management;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ManagementImplementation implements ManagementInterface {
 
     @Override
-    public Order getOrder(int orderId) {
+    public Order getOrder(int orderId) throws SQLException {
+
+        // create a Connection by calling the Connectivity class provided in the package
+        Connectivity conn = new Connectivity();
+
+        Order order;
 
 
         try {
-            // create a Connection by calling the Connectivity class provided in the package
-            Connectivity conn = new Connectivity();
+          
 
             // establish a statement object which is derived from the connection
             Statement stm = conn.connect().createStatement();
 
             // use the method select query to select the row with the specific orderId and print to the console
-            conn.selectValues(stm, "Orders", "order_id", "orderId");
+            String query = "SELECT * FROM Orders WHERE order_id='%s'"
+                    .formatted(orderId);
+
+            ResultSet rs = stm.executeQuery(query);
+
+            // get all the strings from the requirements into a list
+            List<String> requirements = new ArrayList<>();
+            String req = rs.getString(4);
+            while (rs.next()) {
+                requirements.add(req);
+            }
+
+            order = new Order(rs.getInt(1), rs.getInt(2),rs.getString(3), requirements);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            conn.connect().close();
         }
 
-        return new Order(orderId);
+        return order;
     }
 
     @Override
@@ -73,7 +92,7 @@ public class ManagementImplementation implements ManagementInterface {
           Statement stm = conn.connect().createStatement();
 
           // define the query for selecting the amount paid for a given order id
-            String query = "SELECT total_amount FROM Payment INNER JOIN OrderDetails ON Payment.OrderDetailsID = OrderDetails.OrderDetailsID WHERE order_id='%s' "
+            String query = "SELECT total_amount FROM Payment INNER JOIN OrderDetails ON Payment.order_details_id = OrderDetails.order_details_id WHERE OrderDetails.order_id='%s' "
                     .formatted(orderId);
 
             ResultSet rs = stm.executeQuery(query);
@@ -98,7 +117,7 @@ public class ManagementImplementation implements ManagementInterface {
 
 
             // define the string which will total the amount of money made in a day
-            String query = "SELECT SUM(total_amount) FROM Payment WHERE payment_date= ?";
+            String query = "SELECT SUM(total_amount) FROM Payment WHERE payment_date_and_time= ?";
 
             PreparedStatement pst = conn.connect().prepareStatement(query);
 
@@ -125,11 +144,12 @@ public class ManagementImplementation implements ManagementInterface {
         int total = 0;
 
         Connectivity conn = new Connectivity();
+
         try {
 
 
             // define the string which will total the amount of money made in a day
-            String query = "SELECT number_ofguests FROM Booking WHERE booking_id=?";
+            String query = "SELECT number_of_guests FROM Booking WHERE booking_id=?";
 
             PreparedStatement pst = conn.connect().prepareStatement(query);
 
@@ -164,7 +184,8 @@ public class ManagementImplementation implements ManagementInterface {
             // the query will return all the dishes for the order ID given from the OrderDetails table
 
             String query = ("SELECT MenuItem.name as name FROM MenuItem INNER JOIN OrderDetails ON " +
-                    "MenuItem.item_id=OrderDetails.item_id");
+                    "MenuItem.item_id=OrderDetails.item_id WHERE OrderDetails.item_id='%s'")
+                    .formatted(orderId);
 
             // execute the query
 

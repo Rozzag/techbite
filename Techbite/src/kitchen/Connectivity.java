@@ -1,5 +1,6 @@
 package kitchen;
 
+
 import java.sql.*;
 
 /**
@@ -9,7 +10,7 @@ import java.sql.*;
  */
 public class Connectivity {
 
-    private static final String CONN_STRING = "jdbc:mysql://server smcse-stuproj00.city.ac.uk:3306/in2033t01";
+    private static final String CONN_STRING = "jdbc:mysql://smcse-stuproj00.city.ac.uk:3306/in2033t01";
     private static final String userName = "in2033t01_d";
     private static final String passWord = "9XDKGxcQhhI";
 
@@ -20,21 +21,22 @@ public class Connectivity {
      * @return Connection object
      * @throws SQLException
      */
-    public Connection connect() throws SQLException {
+    public Connection connect()  {
 
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
 
-            Connection connection = DriverManager.getConnection(
-                    CONN_STRING, userName, passWord
-            );
-            System.out.println("Connection successful!");
+      try {
+          Connection connection = DriverManager.getConnection(CONN_STRING, userName, passWord);
 
-            return connection;
-        }
+          System.out.println("Successful connection with database!");
+
+          return connection;
+      } catch (SQLException e) {
+          throw new RuntimeException(e);
+      }
+
+
+
+    }
 
     /**
      * prints out a table to the console from a given query

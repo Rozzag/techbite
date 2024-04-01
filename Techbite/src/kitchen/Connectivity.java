@@ -54,10 +54,13 @@ public class Connectivity {
         }
 
         System.out.println();
-
-        for (int i=1; i<=meta.getColumnCount(); i++) {
-            System.out.printf("%-15s", rs.getString(i));
+        
+        while (rs.next()) {
+            for (int i=1; i<=meta.getColumnCount(); i++) {
+                System.out.printf("%-15s", rs.getString(i));
+            }
         }
+
 
         System.out.println();
 

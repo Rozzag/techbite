@@ -1,31 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<GridPane alignment="CENTER" xmlns:fx="http://javafx.com/fxml"
-          fx:controller="com.example.demo.HelloController" style="-fx-background-color: darkblue">
 
-    <ImageView fx:id="image" GridPane.columnIndex="0" GridPane.rowIndex="0"></ImageView>
+<GridPane alignment="CENTER" styleClass="bodybg" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.LoginController">
 
 
-    <Label fx:id="welcomeText"/>
-    <Label GridPane.rowIndex="0" GridPane.columnIndex="1" text="FOH Log In" style="-fx-text-fill: #D9D9D9"
-    alignment="CENTER">
+    <VBox styleClass="bodybg" stylesheets="@style.css" />
+
+    <Label alignment="CENTER" prefHeight="103.0" prefWidth="200.0" styleClass="text" stylesheets="@loginText.css" text="FOH Log In" textAlignment="CENTER" textFill="#ebd4d4" GridPane.columnIndex="0" GridPane.rowIndex="0">
         <font>
-            <Font name="Judson" size="20"/>
+            <Font name="Judson" size="20" />
         </font>
     </Label>
-    <TextField GridPane.rowIndex="5" GridPane.columnIndex="0" promptText="username"></TextField>
-    <PasswordField GridPane.rowIndex="7" GridPane.columnIndex="0" promptText="password"></PasswordField>
-    <Button GridPane.rowIndex="9" GridPane.columnIndex="0" text="Login" onAction="#onHelloButtonClick"/>
+    <TextField fx:id="userName" onKeyReleased="#handleKeyReleased" prefHeight="25.0" prefWidth="155.0" promptText="username" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+    <PasswordField fx:id="passWord" onKeyReleased="#handleKeyReleased" promptText="password" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+    <Button fx:id="logInButton" alignment="CENTER" onAction="#onButtonClick" text="Login" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+     <Label fx:id="errorLabel" style="-fx-font-size: 15" textFill="red" GridPane.rowIndex="10" />
+
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+   </rowConstraints>
+
 </GridPane>

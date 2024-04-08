@@ -1,0 +1,5 @@
+.bodybg{
+    -fx-background-image: url("Lancasters-logos.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}

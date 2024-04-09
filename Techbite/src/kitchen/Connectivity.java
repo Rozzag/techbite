@@ -2,6 +2,7 @@ package kitchen;
 
 
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * The class will allow for the interface methods to run and connect successfully with the database from the front house
@@ -14,29 +15,19 @@ public class Connectivity {
     private static final String userName = "in2033t01_d";
     private static final String passWord = "9XDKGxcQhhI";
 
+    private Connection connection = null;
 
-    /**
-     * This will connect to the database and return an object of type Connection to then be
-     * used for querying
-     * @return Connection object
-     * @throws SQLException
-     */
-    public Connection connect()  {
-
-
-      try {
-          Connection connection = DriverManager.getConnection(CONN_STRING, userName, passWord);
-
-          System.out.println("Successful connection with database!");
-
-          return connection;
-      } catch (SQLException e) {
-          throw new RuntimeException(e);
-      }
-
-
-
+    public Connectivity () {
+        try {
+            connection = DriverManager.getConnection(CONN_STRING, userName, passWord);
+        } catch (SQLException e) {
+            System.err.println("There was an error connecting to the database" + e.getMessage());
+        }
     }
+
+
+
+
 
     /**
      * prints out a table to the console from a given query
@@ -44,7 +35,9 @@ public class Connectivity {
      * @return boolean
      * @throws SQLException
      */
-    public boolean printTable(ResultSet rs) throws SQLException {
+    public ArrayList<ArrayList<String>> printTable(ResultSet rs) throws SQLException {
+
+        ArrayList<ArrayList<String>> results = new ArrayList<>();
 
         boolean found = false;
         var meta = rs.getMetaData();
@@ -56,9 +49,12 @@ public class Connectivity {
         System.out.println();
         
         while (rs.next()) {
+            ArrayList<String> row = new ArrayList<>();
             for (int i=1; i<=meta.getColumnCount(); i++) {
                 System.out.printf("%-15s", rs.getString(i));
+                row.add(rs.getString(i));
             }
+            results.add(row);
         }
 
 
@@ -66,42 +62,52 @@ public class Connectivity {
 
         found = true;
 
-        return found;
+        return results;
     }
 
     /**
      * prints out the row of a given table with some conditions
-     * @param stm
      * @param tableName
      * @param columnName
      * @param columnValue
      * @return boolean
      * @throws SQLException
      */
-    public boolean selectValues(Statement stm, String tableName,
+    public ArrayList<ArrayList<String>> selectValues(String tableName,
                                 String columnName, String columnValue) throws SQLException {
 
         String query = "SELECT * FROM %s WHERE %s='s'"
                 .formatted(tableName, columnName, columnValue);
 
+        PreparedStatement pstm = connection.prepareStatement(query);
+
         // now we will execute the sql statement using the .executeQuery method
-        var rs = stm.executeQuery(query);
+        var rs = pstm.executeQuery(query);
         if (rs != null) {
             return printTable(rs);
-        } return false;
+        } return null;
 
+    }
+
+    public ArrayList<ArrayList<String>> selectValues(String query) throws SQLException {
+        PreparedStatement pstm = connection.prepareStatement(query);
+
+        // now we will execute the sql statement using the .executeQuery method
+        var rs = pstm.executeQuery(query);
+        if (rs != null) {
+            return printTable(rs);
+        } return null;
     }
 
     /**
      * allows for the insertion of values into a relation
-     * @param stm
      * @param tableName
      * @param columnNames
      * @param columnValues
      * @return boolean
      * @throws SQLException
      */
-    public boolean insertValues(Statement stm, String tableName, String[] columnNames,
+    public boolean insertValues(String tableName, String[] columnNames,
                                 String[] columnValues) throws SQLException {
 
         // join the arrays into a list separated by commas for them to be
@@ -113,6 +119,8 @@ public class Connectivity {
         String query = "INSERT into %s (%s) VALUES ('%s')"
                 .formatted(tableName, colNames, colValues);
 
+        Statement stm = connection.createStatement();
+
         // execute the query into the schema
         var rs = stm.executeQuery(query);
 
@@ -120,11 +128,15 @@ public class Connectivity {
 
         int updatedTable = stm.getUpdateCount();
 
-        // let's also print the row added to the table
-        if (updatedTable > 0) {
-            selectValues(stm, tableName, columnNames[0], columnValues[0]);
-        }
-
         return updatedTable > 0;
+    }
+
+    public boolean close() throws SQLException {
+        if (!connection.isClosed()) {
+            connection.close();
+            return true;
+        }
+        return false;
+
     }
 }

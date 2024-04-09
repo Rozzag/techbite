@@ -9,201 +9,101 @@ public class ManagementImplementation implements ManagementInterface {
     @Override
     public Order getOrder(int orderId) throws SQLException {
 
-        // create a Connection by calling the Connectivity class provided in the package
-        Connectivity conn = new Connectivity();
+        Connectivity connectivity = new Connectivity();
 
-        Order order;
+        ArrayList<ArrayList<String>> orderTable = connectivity.selectValues("Orders", "order_id", String.valueOf(orderId));
 
+        // the first arraylist will be the order_id, the second the table number ...
+        String id = orderTable.get(0).get(0);
+        String tableNumber = orderTable.get(1).get(0);
+        String orderDate = orderTable.get(2).get(0);
+        String requirements = orderTable.get(3).get(0);
 
-        try {
-          
-
-            // establish a statement object which is derived from the connection
-            Statement stm = conn.connect().createStatement();
-
-            // use the method select query to select the row with the specific orderId and print to the console
-            String query = "SELECT * FROM Orders WHERE order_id='%s'"
-                    .formatted(orderId);
-
-            ResultSet rs = stm.executeQuery(query);
-
-            // get all the strings from the requirements into a list
-            List<String> requirements = new ArrayList<>();
-            String req = rs.getString(4);
-            while (rs.next()) {
-                requirements.add(req);
-            }
-
-            order = new Order(rs.getInt(1), rs.getInt(2),rs.getString(3), requirements);
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            conn.connect().close();
-        }
-
-        return order;
+        connectivity.close();
+        return new Order(Integer.parseInt(id), Integer.parseInt(tableNumber), orderDate, requirements);
     }
 
     @Override
     public List<String> getPopularDishes() throws SQLException {
+        Connectivity connectivity = new Connectivity();
 
-        // returning the top 5 most popular dishes
-        Connectivity conn = new Connectivity();
+        String query = "SELECT MI.name, COUNT(*) AS order_count\n" +
+                "FROM MenuItem MI\n" +
+                "JOIN Orders O ON MI.item_id = O.item_id\n" +
+                "GROUP BY MI.item_id\n" +
+                "ORDER BY order_count DESC\n" +
+                "LIMIT 5;";
 
-        try {
+        ArrayList<ArrayList<String>> popularDishes = connectivity.selectValues(query);
 
-            Statement stm = conn.connect().createStatement();
+        List<String> popDishes = popularDishes.get(0);
 
-            // the query will return all the dishes for the order ID given from the OrderDetails table
+        connectivity.close();
+        return popDishes;
 
-            String query = ("SELECT MenuItem.name, OrderDetails.quantity as amount FROM MenuItem INNER JOIN OrderDetails ON " +
-                    "MenuItem.item_id=OrderDetails.item_id ORDER BY amount DESC LIMIT 5");
-
-            // execute the query
-
-            ResultSet rs = stm.executeQuery(query);
-
-            // instantiate a list of type string and add all the dishes to the list
-            List<String> dishes = null;
-            while (rs.next()) {
-                dishes.add(rs.getString(1));
-            }
-
-            // return the list
-            return dishes;
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            conn.connect().close();
-        }
     }
 
     @Override
     public double getAmount(int orderId) throws SQLException {
-        // this is done by querying the Payment table and totalling the payments for the day
 
-        double amount = 0;
+        Connectivity connectivity = new Connectivity();
 
-        Connectivity conn = new Connectivity();
-        try {
+        String query = "SELECT total_amount\n" +
+                "FROM Payment\n" +
+                "WHERE order_id = %s;\n".formatted(orderId);
 
-          Statement stm = conn.connect().createStatement();
-
-          // define the query for selecting the amount paid for a given order id
-            String query = "SELECT total_amount FROM Payment INNER JOIN OrderDetails ON Payment.order_details_id = OrderDetails.order_details_id WHERE OrderDetails.order_id='%s' "
-                    .formatted(orderId);
-
-            ResultSet rs = stm.executeQuery(query);
-
-            amount = Integer.parseInt(rs.getString(1));
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            conn.connect().close();
-        }
-        return amount;
+        ArrayList<ArrayList<String>> totAmount = connectivity.selectValues(query);
+        connectivity.close();
+        return Double.parseDouble(totAmount.get(0).get(0));
     }
 
     @Override
+    /**
+     * @params date should be in YYYY-MM-DD
+     */
     public double getTotal(String date) throws SQLException {
 
-        double total = 0;
+        Connectivity connectivity = new Connectivity();
+        String query = "SELECT SUM(P.total_amount) AS total_sales\n" +
+                "FROM Payment P\n" +
+                "JOIN Orders O ON P.order_id = O.order_id\n" +
+                "JOIN Booking B ON O.booking_id = B.booking_id\n" +
+                "WHERE DATE(B.booking_date_time) = %s;\n".formatted(date);
 
-        Connectivity conn = new Connectivity();
-        try {
+        ArrayList<ArrayList<String>> sum = connectivity.selectValues(query);
 
-
-            // define the string which will total the amount of money made in a day
-            String query = "SELECT SUM(total_amount) FROM Payment WHERE payment_date_and_time= ?";
-
-            PreparedStatement pst = conn.connect().prepareStatement(query);
-
-            Timestamp time = Timestamp.valueOf(date);
-            pst.setTimestamp(1, time);
-
-            ResultSet rs = pst.executeQuery();
-
-
-            total = Integer.parseInt(rs.getString(1));
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            conn.connect().close();
-        }
-        return total;
+        connectivity.close();
+        return Double.parseDouble(sum.get(0).get(0));
     }
 
     @Override
     public int getCustomers(int bookingId) throws SQLException {
 
-        // return the number of customers being served for a given order
-        int total = 0;
+        Connectivity connectivity = new Connectivity();
 
-        Connectivity conn = new Connectivity();
+        String query = "SELECT COUNT(*) AS customer_count\n" +
+                "FROM Booking\n" +
+                "WHERE booking_id = %s;\n".formatted(bookingId);
 
-        try {
+        ArrayList<ArrayList<String>> numCustomers = connectivity.selectValues(query);
 
-
-            // define the string which will total the amount of money made in a day
-            String query = "SELECT number_of_guests FROM Booking WHERE booking_id=?";
-
-            PreparedStatement pst = conn.connect().prepareStatement(query);
-
-            pst.setInt(1,bookingId);
-
-            ResultSet rs = pst.executeQuery();
-
-            total = rs.getInt(1);
-
-
-
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            conn.connect().close();
-        }
-        return total;
+        connectivity.close();
+        return Integer.parseInt(numCustomers.get(0).get(0));
 
     }
 
     @Override
     public List<String> getCustomerDishes(int orderId) throws SQLException {
-        // returning all the dishes for an order
-        Connectivity conn = new Connectivity();
+            Connectivity connectivity = new Connectivity();
 
+            String query = "SELECT MI.name AS DishName\n" +
+                    "FROM Orders O\n" +
+                    "JOIN MenuItem MI ON O.item_id = MI.item_id\n" +
+                    "WHERE O.order_id = %s;\n".formatted(orderId);
 
-        try {
+            ArrayList<ArrayList<String>> dishes = connectivity.selectValues(query);
 
-            Statement stm = conn.connect().createStatement();
-
-            // the query will return all the dishes for the order ID given from the OrderDetails table
-
-            String query = ("SELECT MenuItem.name as name FROM MenuItem INNER JOIN OrderDetails ON " +
-                    "MenuItem.item_id=OrderDetails.item_id WHERE OrderDetails.item_id='%s'")
-                    .formatted(orderId);
-
-            // execute the query
-
-            ResultSet rs = stm.executeQuery(query);
-
-            // instantiate a list of type string and add all the dishes to the list
-            List<String> dishes = null;
-            while (rs.next()) {
-                dishes.add(rs.getString(1));
-            }
-
-            // return the list
-            return dishes;
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            conn.connect().close();
-        }
+            connectivity.close();
+            return dishes.get(0);
     }
 }

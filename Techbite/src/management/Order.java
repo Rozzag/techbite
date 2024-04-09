@@ -15,7 +15,7 @@ public class Order {
         private int orderId;
         private int tableNumber;
         private String orderDate;
-        private List<String> specialRequest;
+        private String specialRequest;
 
     public Order(int orderId) {
         Random random = new Random();
@@ -23,7 +23,7 @@ public class Order {
         generateId();
     }
 
-    public Order(int orderId, int tableNumber, String orderDate, List<String> specialRequest) {
+    public Order(int orderId, int tableNumber, String orderDate, String specialRequest) {
         Random random = new Random();
         this.tableNumber = this.tableNumber;
         this.specialRequest = specialRequest;

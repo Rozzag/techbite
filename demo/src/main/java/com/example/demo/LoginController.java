@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import connectivity.Database;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,6 +12,8 @@ import javafx.stage.Stage;
 import java.sql.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class LoginController {
 
@@ -37,46 +40,25 @@ public class LoginController {
     }
 
     @FXML
-    protected void onButtonClick() throws IOException {
+    protected void onButtonClick() throws IOException, SQLException {
         boolean isAdmin = false;
         // connect to database to authenticate user
-        try {
-            Connection conn = DriverManager.getConnection(CONN_STRING, userNameDatabase, passWordDatabase);
 
-            // execute query to get all the credentials
-            String selectCustomer = "SELECT password FROM Credentials WHERE username=?";
-            PreparedStatement selectCustStm = conn.prepareStatement(selectCustomer);
-            selectCustStm.setString(1, userName.getText());
+        Database dataBase = new Database();
+        ArrayList<String> passwords = dataBase.queryTable(new String[]{"password"},"Credentials", "username", userName.getText());
 
-            var result = selectCustStm.executeQuery();
-
-            var meta = result.getMetaData();
-
-
-            while (result.next()) {
-                for (int i=1; i<=meta.getColumnCount(); i++) {
-                    // now we will compare the texts from the database to the text from the user name and password
-                    String password = result.getString(i);
-                    System.out.println(password);
-                    System.out.println(passWord.getText());
-                    if (!password.isEmpty() || !password.trim().isEmpty()) {
-                        if (password.equals(passWord.getText())) {
-                            isAdmin = true;
-                            break;
-                        }
-                    }
-
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("There was an error connecting to the database");
+        if (passwords.contains(passWord.getText())) {
+            isAdmin = true;
         }
+
 
         // if the password is correct, then we move to the main menu, else show error
         if (isAdmin) {
             FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("main-page.fxml"));
             Stage stage = LancasterPage.stage;
             Scene scene = new Scene(fxmlLoader.load());
+            scene.getStylesheets().add(Objects.requireNonNull(LoginController.class.getResource("stackbutton.css")).toExternalForm());
+
             stage.setTitle("Lancaster Restaurant");
             stage.setScene(scene);
             stage.setFullScreen(true);
@@ -84,6 +66,8 @@ public class LoginController {
         } else {
             errorLabel.setText("Incorrect username or password");
         }
+
+        dataBase.closeConnection();
 
     }
 

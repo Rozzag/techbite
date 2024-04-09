@@ -16,6 +16,7 @@ public class LancasterPage extends Application {
 
         // allows for easy switching of pages on the same stage
         this.stage = stage;
+
         FXMLLoader fxmlLoader = new FXMLLoader(LancasterPage.class.getResource("hello-view.fxml"));
 
 

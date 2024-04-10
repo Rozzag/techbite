@@ -2,6 +2,7 @@ package management;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ManagementImplementation implements ManagementInterface {
@@ -11,16 +12,26 @@ public class ManagementImplementation implements ManagementInterface {
 
         Connectivity connectivity = new Connectivity();
 
-        ArrayList<ArrayList<String>> orderTable = connectivity.selectValues("Orders", "order_id", String.valueOf(orderId));
+        ArrayList<ArrayList<String>> orderTable;
+        String query = "SELECT * FROM Orders WHERE order_id=%s;".formatted(orderId);
+        System.out.println(query);
+        orderTable = connectivity.selectValues(query);
+
 
         // the first arraylist will be the order_id, the second the table number ...
-        String id = orderTable.get(0).get(0);
-        String tableNumber = orderTable.get(1).get(0);
-        String orderDate = orderTable.get(2).get(0);
-        String requirements = orderTable.get(3).get(0);
+        if (!orderTable.isEmpty()) {
+            String id = orderTable.get(0).get(0);
+            String tableNumber = orderTable.get(0).get(2);
+            int quantity = Integer.parseInt(orderTable.get(0).get(4));
+            String requirements = orderTable.get(0).get(5);
+            connectivity.close();
+            return new Order(Integer.parseInt(id), Integer.parseInt(tableNumber), quantity, requirements);
 
+        }
         connectivity.close();
-        return new Order(Integer.parseInt(id), Integer.parseInt(tableNumber), orderDate, requirements);
+        System.out.println("There are no orders for ID " + orderId);
+        return null;
+
     }
 
     @Override
@@ -34,9 +45,14 @@ public class ManagementImplementation implements ManagementInterface {
                 "ORDER BY order_count DESC\n" +
                 "LIMIT 5;";
 
-        ArrayList<ArrayList<String>> popularDishes = connectivity.selectValues(query);
+        ArrayList<ArrayList<String>> popularDishes;
+        popularDishes = connectivity.selectValues(query);
 
-        List<String> popDishes = popularDishes.get(0);
+        List<String> popDishes = new LinkedList<>();
+
+        for (int i=0; i<popularDishes.size(); i++) {
+            popDishes.add(popularDishes.get(i).get(0));
+        }
 
         connectivity.close();
         return popDishes;
@@ -61,19 +77,24 @@ public class ManagementImplementation implements ManagementInterface {
     /**
      * @params date should be in YYYY-MM-DD
      */
-    public double getTotal(String date) throws SQLException {
+    public String getTotal(String date) throws SQLException {
+
 
         Connectivity connectivity = new Connectivity();
-        String query = "SELECT SUM(P.total_amount) AS total_sales\n" +
-                "FROM Payment P\n" +
-                "JOIN Orders O ON P.order_id = O.order_id\n" +
-                "JOIN Booking B ON O.booking_id = B.booking_id\n" +
-                "WHERE DATE(B.booking_date_time) = %s;\n".formatted(date);
+        String query = "SELECT SUM(Payment.total_amount) AS daily_revenue FROM Booking JOIN Payment ON Booking.booking_id = Payment.order_id WHERE DATE(Booking.booking_date_time) = '%s';".formatted(Date.valueOf(date));
 
         ArrayList<ArrayList<String>> sum = connectivity.selectValues(query);
 
+        if (sum != null) {
+            connectivity.close();
+            try {
+                return sum.get(0).get(0);
+            } catch (NullPointerException | NumberFormatException e) {
+                System.err.println("There was an issue with the query: " + e.getMessage());
+            }
+        }
         connectivity.close();
-        return Double.parseDouble(sum.get(0).get(0));
+        return null;
     }
 
     @Override

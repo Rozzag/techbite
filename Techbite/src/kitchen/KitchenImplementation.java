@@ -19,19 +19,18 @@ public class KitchenImplementation implements KitchenInterface {
 
         Connectivity connectivity = new Connectivity();
 
-        String query = "SELECT MI.name AS DishName, O.quantity AS Quantity FROM Orders AS O MenuItem AS MI ON O.item_id = MI.item_id WHERE O.order_id = %s;".formatted(orderId);
+        String query = "SELECT MI.name AS DishName, O.quantity AS Quantity FROM Orders AS O JOIN MenuItem AS MI ON O.item_id = MI.item_id WHERE O.order_id = %s;".formatted(orderId);
 
         Map<String, Integer> dishes = new HashMap<>();
 
         ArrayList<ArrayList<String>> values = connectivity.selectValues(query);
 
-        // the first inner array list will hold the dish names and the second will hold its quantity
 
        ArrayList<String> dish = values.get(0);
-       ArrayList<String> quantity = values.get(1);
 
-       for (int i=0; i<dish.size(); i++) {
-           dishes.put(dish.get(i), Integer.valueOf(quantity.get(i)));
+
+       for (int i=0; i<dish.size()-1; i++) {
+           dishes.put(dish.get(i), Integer.valueOf(dish.get(i+1)));
        }
 
        if (!dishes.isEmpty()) {
@@ -49,16 +48,16 @@ public class KitchenImplementation implements KitchenInterface {
             Connectivity connectivity = new Connectivity();
 
             String query = "SELECT O.order_id" +
-                    "FROM Customer AS C" +
-                    "JOIN Visit AS V ON C.customer_id = V.customer_id" +
+                    " FROM Customer AS C" +
+                    " JOIN Visit AS V ON C.customer_id = V.customer_id " +
                     "JOIN Orders AS O ON V.table_id = O.table_id" +
-                    "WHERE C.name = %s;".formatted(customerName);
+                    " WHERE C.name = '%s';".formatted(customerName);
 
-            ArrayList<String> orderIds = connectivity.selectValues(query).get(0);
+            ArrayList<ArrayList<String>> orderIds = connectivity.selectValues(query);
 
             if (!orderIds.isEmpty()) {
                 connectivity.close();
-                return Integer.parseInt(orderIds.get(0));
+                return Integer.parseInt(orderIds.get(0).get(0));
             }
 
         System.out.println("The order id for customer " + customerName + " doesn't exist");
@@ -72,11 +71,10 @@ public class KitchenImplementation implements KitchenInterface {
 
         Connectivity connectivity = new Connectivity();
 
-        ArrayList<String> requirements = connectivity.selectValues("Orders", "order_id", String.valueOf(orderId)).get(0);
-
+        ArrayList<ArrayList<String>> requirements = connectivity.selectValues("Orders", "order_id", String.valueOf(orderId));
         if (!requirements.isEmpty()) {
             connectivity.close();
-            return requirements.get(0);
+            return requirements.get(0).get(5);
         }
 
         System.out.println("The additional requirements for the order ID " + orderId + " was not found");

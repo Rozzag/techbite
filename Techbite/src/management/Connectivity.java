@@ -42,23 +42,17 @@ public class Connectivity {
         boolean found = false;
         var meta = rs.getMetaData();
 
-        for (int i=1; i<=meta.getColumnCount(); i++) {
-            System.out.printf("%-15s", meta.getColumnName(i).toUpperCase());
-        }
 
-        System.out.println();
 
         while (rs.next()) {
             ArrayList<String> row = new ArrayList<>();
             for (int i=1; i<=meta.getColumnCount(); i++) {
-                System.out.printf("%-15s", rs.getString(i));
                 row.add(rs.getString(i));
             }
             results.add(row);
         }
 
 
-        System.out.println();
 
         found = true;
 

@@ -2,7 +2,6 @@ package management;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Adam Rezzag Salem
@@ -36,11 +35,12 @@ public interface ManagementInterface {
 
     /**
      * This gives the total amount the restaurant gained on a given day
+     *
      * @param date
      * @return the total made in a single day at the restaurant
      * @throws SQLException
      */
-    public double getTotal(String date) throws SQLException;
+    public String getTotal(String date) throws SQLException;
 
     /**
      * Total number of customers for a booking that was made

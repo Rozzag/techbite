@@ -42,23 +42,17 @@ public class Connectivity {
         boolean found = false;
         var meta = rs.getMetaData();
 
-        for (int i=1; i<=meta.getColumnCount(); i++) {
-            System.out.printf("%-15s", meta.getColumnName(i).toUpperCase());
-        }
 
-        System.out.println();
-        
+
         while (rs.next()) {
             ArrayList<String> row = new ArrayList<>();
             for (int i=1; i<=meta.getColumnCount(); i++) {
-                System.out.printf("%-15s", rs.getString(i));
                 row.add(rs.getString(i));
             }
             results.add(row);
         }
 
 
-        System.out.println();
 
         found = true;
 
@@ -76,7 +70,7 @@ public class Connectivity {
     public ArrayList<ArrayList<String>> selectValues(String tableName,
                                 String columnName, String columnValue) throws SQLException {
 
-        String query = "SELECT * FROM %s WHERE %s='s'"
+        String query = "SELECT * FROM %s WHERE %s=%s;"
                 .formatted(tableName, columnName, columnValue);
 
         PreparedStatement pstm = connection.prepareStatement(query);
@@ -90,10 +84,10 @@ public class Connectivity {
     }
 
     public ArrayList<ArrayList<String>> selectValues(String query) throws SQLException {
-        PreparedStatement pstm = connection.prepareStatement(query);
+        Statement stm = connection.createStatement();
 
         // now we will execute the sql statement using the .executeQuery method
-        var rs = pstm.executeQuery(query);
+        var rs = stm.executeQuery(query);
         if (rs != null) {
             return printTable(rs);
         } return null;

@@ -1,6 +1,7 @@
 package kitchen;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,12 +22,12 @@ public interface KitchenInterface {
     public Map<String,Integer> getDishesAndQuantity(int orderId) throws SQLException;
 
     /**
-     * Returns the orderId of a given customer for further information to be gotten
-     * @param customerName
-     * @return int
+     * Returns a list of orderIDs for the current day
+     * @param
+     * @return List<Integer>
      * @throws SQLException
      */
-    public int getOrderId(String customerName) throws SQLException;
+    public List<Integer> getOrderId() throws SQLException;
 
     /**
      * Any additional requirements from the customer's side are met

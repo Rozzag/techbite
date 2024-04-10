@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,25 +46,27 @@ public class KitchenImplementation implements KitchenInterface {
     }
 
     @Override
-    public int getOrderId(String customerName) throws SQLException {
+    public List<Integer> getOrderId() throws SQLException {
             Connectivity connectivity = new Connectivity();
 
-            String query = "SELECT O.order_id" +
-                    " FROM Customer AS C" +
-                    " JOIN Visit AS V ON C.customer_id = V.customer_id " +
-                    "JOIN Orders AS O ON V.table_id = O.table_id" +
-                    " WHERE C.name = '%s';".formatted(customerName);
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formatDate = today.format(formatter);
 
-            ArrayList<ArrayList<String>> orderIds = connectivity.selectValues(query);
+            String query = "SELECT Orders.order_id" +
+                    " FROM Orders, Booking " +
+                    "WHERE Orders.booking_id = Booking.booking_id AND DATE(Booking.booking_date_time) = '%s';".formatted(formatDate);
+
+            ArrayList<Integer> orderIds = connectivity.getIDs(query);
 
             if (!orderIds.isEmpty()) {
                 connectivity.close();
-                return Integer.parseInt(orderIds.get(0).get(0));
+                return orderIds;
             }
 
-        System.out.println("The order id for customer " + customerName + " doesn't exist");
+        System.out.println("There are currently no more orders today");
             connectivity.close();
-            return 0;
+            return new ArrayList<Integer>();
 
     }
 

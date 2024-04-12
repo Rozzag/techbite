@@ -1,0 +1,13 @@
+.button {
+    -fx-background-color: #ef0f37; /* Green background */
+    -fx-text-fill: white; /* White text */
+    -fx-font-weight: bold; /* Make the text bold */
+    -fx-border-radius: 5; /* Rounded corners */
+    -fx-background-radius: 5; /* Ensure the background also has rounded corners */
+    -fx-padding: 10 20; /* Top/bottom padding of 10px, right/left padding of 20px */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); /* Subtle shadow effect */
+}
+
+.button:hover {
+    -fx-background-color: #45a049; /* Slightly darker shade of green when hovered */
+}

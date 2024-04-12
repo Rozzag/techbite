@@ -3,6 +3,7 @@ package com.example.demo;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -30,6 +31,9 @@ public class MainPageController {
     @FXML
     private BorderPane borderPane;
 
+    @FXML
+    private Button logoutButton;
+
     private Button previousSelectedButton = null;
 
 
@@ -46,13 +50,18 @@ public class MainPageController {
 
 
 
-    public void dashboardPage(MouseEvent mouseEvent) {
+    public void dashboardPage(MouseEvent mouseEvent) throws IOException {
         // the previous button will revert to its normal colour
         if (this.previousSelectedButton != null) {
             normalButton(this.previousSelectedButton);
         }
         highlightedButton(dashboard);
         this.previousSelectedButton = dashboard;
+
+        // add the tables page to the centre of the border pane
+        Node dashboard = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("dashboard.fxml")));
+
+        borderPane.setCenter(dashboard);
     }
 
     public void tablesPage(MouseEvent mouseEvent) throws IOException {
@@ -83,5 +92,16 @@ public class MainPageController {
         }
         highlightedButton(payment);
         this.previousSelectedButton = payment;
+    }
+
+    public void logout(MouseEvent mouseEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("login.fxml"));
+        Stage stage = LancasterPage.stage;
+        Scene scene = new Scene(fxmlLoader.load());
+
+        stage.setTitle("Lancaster Restaurant");
+        stage.setScene(scene);
+        stage.setFullScreen(true);
+        stage.show();
     }
 }

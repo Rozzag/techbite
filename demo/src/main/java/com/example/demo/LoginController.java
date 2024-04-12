@@ -1,6 +1,7 @@
 package com.example.demo;
 
-import connectivity.Database;
+
+import com.example.demo.connectivity.Database;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -16,10 +17,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class LoginController {
-
-    String CONN_STRING = "jdbc:mysql://smcse-stuproj00.city.ac.uk:3306/in2033t01";
-    String userNameDatabase = "in2033t01_d";
-    String passWordDatabase = "9XDKGxcQhhI";
 
     @FXML
     private TextField userName;
@@ -45,15 +42,20 @@ public class LoginController {
         // connect to database to authenticate user
 
         Database dataBase = new Database();
-        ArrayList<String> passwords = dataBase.queryTable(new String[]{"password"},"Credentials", "username", userName.getText());
+        String query = "SELECT * FROM Credentials WHERE username='%s';".formatted(userName.getText());
+        ArrayList<ArrayList<String>> passwords = dataBase.selectValues(query);
+        ArrayList<String> pass = passwords.get(0);
 
-        if (passwords.contains(passWord.getText())) {
+
+        if (pass.get(3).equals(passWord.getText())) {
             isAdmin = true;
         }
 
 
         // if the password is correct, then we move to the main menu, else show error
         if (isAdmin) {
+            userName.setText("");
+            passWord.setText("");
             FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("main-page.fxml"));
             Stage stage = LancasterPage.stage;
             Scene scene = new Scene(fxmlLoader.load());
@@ -67,7 +69,7 @@ public class LoginController {
             errorLabel.setText("Incorrect username or password");
         }
 
-        dataBase.closeConnection();
+        dataBase.close();
 
     }
 

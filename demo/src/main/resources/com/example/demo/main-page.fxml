@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane  fx:id="borderPane" prefHeight="416.0" prefWidth="629.0" styleClass="background" stylesheets="@lightgrey.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.MainPageController">
+<BorderPane fx:id="borderPane" prefHeight="416.0" prefWidth="629.0" styleClass="background" stylesheets="@lightgrey.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.MainPageController">
    <left>
       <GridPane prefHeight="363.0" prefWidth="173.0" styleClass="background" BorderPane.alignment="CENTER">
          <columnConstraints>
@@ -51,6 +51,7 @@
                   </ImageView>
                </children>
             </VBox>
+            <Button fx:id="logoutButton" mnemonicParsing="false" onMousePressed="#logout" prefHeight="40.0" prefWidth="132.0" stylesheets="@resetbutton.css" text="Logout" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
          </children>
          <stylesheets>
             <URL value="@lightgrey.css" />

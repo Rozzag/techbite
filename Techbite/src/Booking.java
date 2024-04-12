@@ -17,7 +17,7 @@ public class Booking {
         this.name = name;
         this.customerNum = customerNum;
         this.numOfDiners = numOfDiners;
-        this.specialRequest = this.specialRequest == "" ? "No special requests" : specialRequest;
+        this.specialRequest = specialRequest;
         this.wheelchair = wheelchair;
 
         Connectivity c = new Connectivity();

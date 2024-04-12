@@ -1,6 +1,7 @@
 package com.example.demo.connectivity;
 
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -80,6 +81,25 @@ public class Database {
         if (rs != null) {
             return printTable(rs);
         } return null;
+
+    }
+
+    public boolean insertValues(String query) throws SQLException {
+
+        PreparedStatement pstm = connection.prepareStatement(query);
+
+        // now we will execute the sql statement using the .executeQuery method
+        try {
+            int rs = pstm.executeUpdate(query);
+            if (rs == 1) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+    return false;
+
 
     }
 

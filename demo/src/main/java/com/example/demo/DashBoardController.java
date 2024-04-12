@@ -1,12 +1,14 @@
 package com.example.demo;
 
 import com.example.demo.connectivity.Database;
+import com.example.demo.supportclasses.Booking;
 import javafx.fxml.FXML;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -30,7 +32,29 @@ public class DashBoardController {
     @FXML
     private DatePicker datePicker;
 
+    @FXML
+    private Label time;
+
+    @FXML
+    private Label bookingId;
+
+    @FXML
+    private Label guests;
+
+    @FXML
+    private Label wheelchair;
+
+    @FXML
+    private Label requirement;
+
     private LocalDate date;
+
+    // we will use the string to get the bookings and swipe through them
+    private ArrayList<Booking> bookings = new ArrayList<>();
+
+    // the index of the booking being swiped
+    private int index = 0;
+
 
     public void initialize() throws SQLException {
 
@@ -94,14 +118,46 @@ public class DashBoardController {
 
 
     public void handleButtons() {
-        String input = datePicker.getEditor().getText();
         // we need to also ensure that the inputted text is in the date format
-        LocalDate date = parseDate(input);
+        LocalDate date = datePicker.getValue();
         boolean disableButtons = date == null;
         submitButton.setDisable(disableButtons);
         resetButton.setDisable(disableButtons);
     }
-    public void submit() {
+    public void submit() throws SQLException {
+        LocalDate date = datePicker.getValue();
+
+
+        String query = "SELECT * FROM Booking WHERE DATE(booking_date_time) = '%s' ORDER BY DATE(booking_date_time);".formatted(date);
+        System.out.println(query);
+        Database db = new Database();
+
+        ArrayList<ArrayList<String>> values = db.selectValues(query);
+
+            for (ArrayList<String> rows : values) {
+                int bookingId = Integer.parseInt(rows.get(0));
+                int custId = Integer.parseInt(rows.get(1));
+                String bookingDateTime = rows.get(2).split(" ")[1];
+                int numCustomers = Integer.parseInt(rows.get(3));
+                int wheelChair = Integer.parseInt(rows.get(4));
+                String requirements = rows.get(5);
+                Booking booking = new Booking(bookingId, custId, bookingDateTime, numCustomers, wheelChair, requirements);
+                bookings.add(booking);
+        }
+
+        // for each booking, we will add the details to the labels in the grid pane section
+        bookingId.setText(String.valueOf(bookings.get(index).getBookingID()));
+        guests.setText(String.valueOf(bookings.get(index).getNumOfDiners()));
+        int wheelChair = bookings.get(index).getWheelchair();
+        if (wheelChair == 1) {
+            wheelchair.setText("Yes");
+        } else if (wheelChair == 0) {
+             wheelchair.setText("No");
+        }
+        requirement.setText(bookings.get(index).getSpecialRequest());
+        time.setText(bookings.get(index).getDt());
+
+
 
     }
 }

@@ -1,4 +1,4 @@
-package com.example.demo.connectivity;
+package kitchen;
 
 
 import java.sql.*;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author Adam Rezzag Salem
  * @date 22nd February 2024
  */
-public class Database {
+public class Connectivity {
 
     private static final String CONN_STRING = "jdbc:mysql://smcse-stuproj00.city.ac.uk:3306/in2033t01";
     private static final String userName = "in2033t01_d";
@@ -17,13 +17,17 @@ public class Database {
 
     private Connection connection = null;
 
-    public Database () {
+    public Connectivity () {
         try {
             connection = DriverManager.getConnection(CONN_STRING, userName, passWord);
         } catch (SQLException e) {
             System.err.println("There was an error connecting to the database" + e.getMessage());
         }
     }
+
+
+
+
 
     /**
      * prints out a table to the console from a given query
@@ -38,6 +42,8 @@ public class Database {
         boolean found = false;
         var meta = rs.getMetaData();
 
+
+
         while (rs.next()) {
             ArrayList<String> row = new ArrayList<>();
             for (int i=1; i<=meta.getColumnCount(); i++) {
@@ -45,6 +51,8 @@ public class Database {
             }
             results.add(row);
         }
+
+
 
         found = true;
 
@@ -60,9 +68,9 @@ public class Database {
      * @throws SQLException
      */
     public ArrayList<ArrayList<String>> selectValues(String tableName,
-                                                     String columnName, String columnValue) throws SQLException {
+                                String columnName, String columnValue) throws SQLException {
 
-        String query = "SELECT * FROM %s WHERE %s='s'"
+        String query = "SELECT * FROM %s WHERE %s=%s;"
                 .formatted(tableName, columnName, columnValue);
 
         PreparedStatement pstm = connection.prepareStatement(query);
@@ -76,13 +84,26 @@ public class Database {
     }
 
     public ArrayList<ArrayList<String>> selectValues(String query) throws SQLException {
-        PreparedStatement pstm = connection.prepareStatement(query);
+        Statement stm = connection.createStatement();
 
         // now we will execute the sql statement using the .executeQuery method
-        var rs = pstm.executeQuery(query);
+        var rs = stm.executeQuery(query);
         if (rs != null) {
             return printTable(rs);
         } return null;
+    }
+
+    public ArrayList<Integer> getIDs(String query) throws SQLException {
+        ArrayList<Integer> IDs = new ArrayList<>();
+
+        Statement stm = connection.createStatement();
+        ResultSet rs = stm.executeQuery(query);
+
+        while(rs.next()){
+            IDs.add(rs.getInt("order_id"));
+        }
+
+        return IDs;
     }
 
     /**
@@ -125,5 +146,4 @@ public class Database {
         return false;
 
     }
-
 }

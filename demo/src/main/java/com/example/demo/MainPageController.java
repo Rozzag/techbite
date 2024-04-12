@@ -36,8 +36,6 @@ public class MainPageController {
 
     private Button previousSelectedButton = null;
 
-
-
     // normal button
     public void highlightedButton(Button button) {
         button.setStyle("-fx-background-color: #D9D9D9; -fx-text-fill: #2B3336;");
@@ -78,12 +76,15 @@ public class MainPageController {
         borderPane.setCenter(tablesPage);
     }
 
-    public void menusPage(MouseEvent mouseEvent) {
+    public void menusPage(MouseEvent mouseEvent) throws IOException {
         if (this.previousSelectedButton != null) {
             normalButton(this.previousSelectedButton);
         }
         highlightedButton(menu);
         this.previousSelectedButton = menu;
+
+        Node menuPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("menu.fxml")));
+        borderPane.setCenter(menuPage);
     }
 
     public void paymentPage(MouseEvent mouseEvent) {

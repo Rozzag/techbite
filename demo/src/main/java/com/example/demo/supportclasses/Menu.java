@@ -1,4 +1,6 @@
-package com.example.demo.Functionalities;
+package com.example.demo.supportclasses;
+
+import com.example.demo.connectivity.Database;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,18 +23,15 @@ public class Menu {
         prices = new ArrayList<>();
         allergens = new ArrayList<>();
 
-        Connectivity c = new Connectivity();
-        conn = c.getConnection();
+        Database c = new Database();
+        ArrayList<ArrayList<String>> menuValues = c.selectValues("SELECT * FROM MenuItem");
 
-        Statement stm = conn.createStatement();
-        ResultSet rs = stm.executeQuery("SELECT * FROM MenuItem");
-
-        while (rs.next()){
-            itemIDs.add(rs.getInt("item_id"));
-            names.add(rs.getString("name"));
-            ingredients.add(rs.getString("description"));
-            prices.add(rs.getDouble("price"));
-            allergens.add(rs.getString("allergen_info"));
+        for (ArrayList<String> rows : menuValues){
+            itemIDs.add(Integer.parseInt(rows.get(0)));
+            names.add(rows.get(1));
+            ingredients.add(rows.get(2));
+            prices.add(Double.parseDouble(rows.get(3)));
+            allergens.add(rows.get(4));
         }
         menuLength = itemIDs.size();
     }

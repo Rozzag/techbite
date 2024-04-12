@@ -93,6 +93,19 @@ public class Connectivity {
         } return null;
     }
 
+    public ArrayList<Integer> getIDs(String query) throws SQLException {
+        ArrayList<Integer> IDs = new ArrayList<>();
+
+        Statement stm = connection.createStatement();
+        ResultSet rs = stm.executeQuery(query);
+
+        while(rs.next()){
+            IDs.add(rs.getInt("order_id"));
+        }
+
+        return IDs;
+    }
+
     /**
      * allows for the insertion of values into a relation
      * @param tableName

@@ -2,6 +2,7 @@ package com.example.demo;
 
 
 import com.example.demo.connectivity.Database;
+import com.example.demo.supportclasses.Staff;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -30,6 +31,8 @@ public class LoginController {
     @FXML
     private Label errorLabel;
 
+    private Staff staff;
+
 
     // initialise the button to be deactivated
     public void initialize() {
@@ -43,12 +46,13 @@ public class LoginController {
         // connect to database to authenticate user
         Database dataBase = new Database();
         String query = "SELECT * FROM Credentials WHERE username='%s';".formatted(userName.getText());
-        ArrayList<ArrayList<String>> passwords = dataBase.selectValues(query);
-        ArrayList<String> pass = passwords.get(0);
+        ArrayList<ArrayList<String>> credentials = dataBase.selectValues(query);
+        ArrayList<String> credential = credentials.get(0);
 
 
-        if (pass.get(3).equals(passWord.getText())) {
+        if (credential.get(3).equals(passWord.getText())) {
             isAdmin = true;
+            staff = new Staff(Integer.parseInt(credential.get(1)));
         }
 
 

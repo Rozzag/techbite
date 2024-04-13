@@ -41,7 +41,6 @@ public class LoginController {
 
     @FXML
     protected void onButtonClick() throws IOException, SQLException {
-        boolean isAdmin = false;
 
         // connect to database to authenticate user
         Database dataBase = new Database();
@@ -51,24 +50,53 @@ public class LoginController {
 
 
         if (credential.get(3).equals(passWord.getText())) {
-            isAdmin = true;
-            staff = new Staff(Integer.parseInt(credential.get(1)));
-        }
-
-
-        // if the password is correct, then we move to the main menu, else show error
-        if (isAdmin) {
+            // if the password is correct, then we move to the main menu, else show error
             userName.setText("");
             passWord.setText("");
-            FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("main-page.fxml"));
-            Stage stage = LancasterPage.stage;
-            Scene scene = new Scene(fxmlLoader.load());
-            scene.getStylesheets().add(Objects.requireNonNull(LoginController.class.getResource("stackbutton.css")).toExternalForm());
 
-            stage.setTitle("Lancaster Restaurant");
-            stage.setScene(scene);
-            stage.setFullScreen(true);
-            stage.show();
+            staff = new Staff(Integer.parseInt(credential.get(1)));
+
+            String role = staff.getRole();
+
+            if (role.equals("Admin")) {
+
+                FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("admin-menu.fxml"));
+                Stage stage = LancasterPage.stage;
+                Scene scene = new Scene(fxmlLoader.load());
+                scene.getStylesheets().add(Objects.requireNonNull(LoginController.class.getResource("stackbutton.css")).toExternalForm());
+
+                stage.setTitle("Lancaster Restaurant");
+                stage.setScene(scene);
+                stage.setFullScreen(true);
+                stage.show();
+            } else if (role.equals("Waiter") || role.equals("Sommelier")) {
+                FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("waiter-page.fxml"));
+                Stage stage = LancasterPage.stage;
+                Scene scene = new Scene(fxmlLoader.load());
+                scene.getStylesheets().add(Objects.requireNonNull(LoginController.class.getResource("stackbutton.css")).toExternalForm());
+
+                stage.setTitle("Lancaster Restaurant");
+                stage.setScene(scene);
+                stage.setFullScreen(true);
+                stage.show();
+
+        } else if (role.equals("Maître d")) {
+                FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("maitred-page.fxml"));
+                Stage stage = LancasterPage.stage;
+                Scene scene = new Scene(fxmlLoader.load());
+                scene.getStylesheets().add(Objects.requireNonNull(LoginController.class.getResource("stackbutton.css")).toExternalForm());
+
+                stage.setTitle("Lancaster Restaurant");
+                stage.setScene(scene);
+                stage.setFullScreen(true);
+                stage.show();
+            }
+
+
+
+
+
+
         } else {
             errorLabel.setText("Incorrect username or password");
         }

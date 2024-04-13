@@ -6,33 +6,25 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Objects;
 
-public class MainPageController {
+public class MaitredPageController {
     @FXML
     private Button dashboard;
 
     @FXML
-    private Button menu;
-
-    @FXML
     private Button table;
-
-    @FXML
-    private Button payment;
 
     @FXML
     private BorderPane borderPane;
 
     @FXML
     private Button logoutButton;
+
 
     private Button previousSelectedButton = null;
 
@@ -44,6 +36,21 @@ public class MainPageController {
     // highlighted button
     public void normalButton(Button button) {
         button.setStyle("-fx-background-color: #2B3336; -fx-text-fill: #D9D9D9;");
+    }
+
+    // initialize the main page for the administrator to be the dashboard
+    public void initialize() throws IOException {
+        // the previous button will revert to its normal colour
+        if (this.previousSelectedButton != null) {
+            normalButton(this.previousSelectedButton);
+        }
+        highlightedButton(dashboard);
+        this.previousSelectedButton = dashboard;
+
+        // add the tables page to the centre of the border pane
+        Node dashboard = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("dashboard.fxml")));
+
+        borderPane.setCenter(dashboard);
     }
 
 
@@ -76,24 +83,7 @@ public class MainPageController {
         borderPane.setCenter(tablesPage);
     }
 
-    public void menusPage(MouseEvent mouseEvent) throws IOException {
-        if (this.previousSelectedButton != null) {
-            normalButton(this.previousSelectedButton);
-        }
-        highlightedButton(menu);
-        this.previousSelectedButton = menu;
 
-        Node menuPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("menu.fxml")));
-        borderPane.setCenter(menuPage);
-    }
-
-    public void paymentPage(MouseEvent mouseEvent) {
-        if (this.previousSelectedButton != null) {
-            normalButton(this.previousSelectedButton);
-        }
-        highlightedButton(payment);
-        this.previousSelectedButton = payment;
-    }
 
     public void logout(MouseEvent mouseEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("login.fxml"));
@@ -105,4 +95,6 @@ public class MainPageController {
         stage.setFullScreen(true);
         stage.show();
     }
+
+
 }

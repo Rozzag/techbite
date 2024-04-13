@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.w3c.dom.ls.LSOutput;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -18,6 +19,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class AdminPageController implements Initializable {
+    @FXML
+    private TableColumn<Staff, Integer> IDs;
     @FXML
     private TableColumn<Staff, String> names;
 
@@ -27,24 +30,27 @@ public class AdminPageController implements Initializable {
     @FXML
     private TableView<Staff> staffTable;
 
-    private ObservableList<Staff> staff = FXCollections.observableArrayList();
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         try {
             List<Staff> staffList = Staff.getAllStaff();
+            ObservableList<Staff> staff = FXCollections.observableArrayList(staffList);
 
             for(Staff s: staffList){
-                staff.add(s);
+                System.out.println(s.getRole());
+                if(s.getRole() != "Maitre d"){
+                    staff.add(s);
+                }
             }
 
+            IDs.setCellValueFactory(new PropertyValueFactory<Staff, Integer>("staffID")); // Assuming you have getName()
             names.setCellValueFactory(new PropertyValueFactory<Staff, String>("name")); // Assuming you have getName()
             roles.setCellValueFactory(new PropertyValueFactory<Staff, String>("role")); // Assuming you have getRole()
 
             staffTable.setItems(staff);
 
         } catch (SQLException e) {
+            System.out.println(3);
             throw new RuntimeException(e);
         }
     }

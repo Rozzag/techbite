@@ -1,27 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
+<<<<<<< HEAD
 <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="com.example.demo.AdminPageController">
+=======
+<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.AdminPageController">
+>>>>>>> 65d998d9989941bb490fca2fe559bcc6bb70b65f
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="196.60001220703126" minHeight="10.0" prefHeight="196.60001220703126" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="127.79999389648438" minHeight="10.0" prefHeight="42.20000305175785" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="190.2000030517578" minHeight="10.0" prefHeight="160.59999694824216" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="196.60001220703126" minHeight="10.0" prefHeight="196.60001220703126" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="196.60001220703126" minHeight="10.0" prefHeight="58.19999999999999" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="127.79999389648438" minHeight="10.0" prefHeight="40.20000610351562" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="190.2000030517578" minHeight="10.0" prefHeight="135.39999389648438" vgrow="SOMETIMES" />
+      <RowConstraints />
   </rowConstraints>
    <children>
-      <TableView fx:id="staffTable" prefHeight="200.0" prefWidth="354.0" GridPane.columnSpan="2">
+      <TableView fx:id="staffTable" prefHeight="198.0" prefWidth="601.0" GridPane.columnSpan="2">
         <columns>
-          <TableColumn fx:id="names" prefWidth="477.5999633669853" text="Name" />
-          <TableColumn fx:id="roles" minWidth="0.0" prefWidth="123.20001220703125" text="Role" />
+            <TableColumn fx:id="IDs" prefWidth="51.2000732421875" text="ID" />
+          <TableColumn fx:id="names" prefWidth="440.0" text="Name" />
+          <TableColumn fx:id="roles" minWidth="0.0" prefWidth="106.39996337890625" text="Role" />
         </columns>
       </TableView>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" GridPane.rowSpan="3">
+         <children>
+            <Label text="User" />
+            <PasswordField promptText="New password" />
+         </children>
+      </HBox>
    </children>
 </GridPane>

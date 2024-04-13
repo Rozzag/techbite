@@ -71,6 +71,7 @@ public class MenuController implements Initializable {
         }
 
         totalCost.setText("Total cost: £" + cost);
+
     }
 
     @FXML

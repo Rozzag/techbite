@@ -76,6 +76,9 @@ public class AdminViewController {
         Node dashboard = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("dashboard.fxml")));
 
         borderPane.setCenter(dashboard);
+        if(borderPane.getRight() != null){
+            borderPane.setRight(null);
+        }
     }
 
     public void tablesPage(MouseEvent mouseEvent) throws IOException {
@@ -90,6 +93,10 @@ public class AdminViewController {
         Node tablesPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("table-page.fxml")));
 
         borderPane.setCenter(tablesPage);
+
+        Node tables = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("table.fxml")));
+
+        borderPane.setRight(tables);
     }
 
     public void menusPage(MouseEvent mouseEvent) throws IOException {
@@ -101,6 +108,10 @@ public class AdminViewController {
 
         Node menuPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("menu.fxml")));
         borderPane.setCenter(menuPage);
+
+        if(borderPane.getRight() != null){
+            borderPane.setRight(null);
+        }
     }
 
     public void adminPage() throws IOException {
@@ -112,6 +123,10 @@ public class AdminViewController {
 
         Node menuPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("admin-page.fxml")));
         borderPane.setCenter(menuPage);
+
+        if(borderPane.getRight() != null){
+            borderPane.setRight(null);
+        }
     }
 
 

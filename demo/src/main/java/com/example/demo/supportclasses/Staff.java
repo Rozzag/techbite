@@ -24,6 +24,10 @@ public class Staff {
         db.close();
     }
 
+    public int getStaffID() {
+        return staffID;
+    }
+
     public String getName() {
         return name;
     }

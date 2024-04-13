@@ -78,6 +78,8 @@
             </Label>
          </children>
       </GridPane>
+      <Label fx:id="revenueStr" layoutX="14.0" layoutY="97.0" text="Today's revenue: £" />
+      <Label fx:id="numBookings" layoutX="672.0" layoutY="97.0" text="Bookings today:" />
    </children>
    <padding>
       <Insets left="100.0" top="100.0" />

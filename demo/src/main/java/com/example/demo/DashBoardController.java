@@ -46,6 +46,10 @@ public class DashBoardController {
 
     @FXML
     private Label requirement;
+    @FXML
+    private Label revenueStr;
+    @FXML
+    private Label numBookings;
 
     private LocalDate date;
 
@@ -57,10 +61,10 @@ public class DashBoardController {
 
 
     public void initialize() throws SQLException {
-
-
-
-        date = LocalDate.of(2024,04,11);
+        LocalDate today = LocalDate.now(); // Get today's date
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = today.format(formatter);
+        date = LocalDate.parse(formattedDate, formatter);
         datePicker.setValue(date);
 
         // check the DatePicker input is not empty and if it is, the buttons are disabled
@@ -77,6 +81,23 @@ public class DashBoardController {
 
         // for each selected date we will extract the time and the total number of guests during that period
         Database database = new Database();
+
+        //Get total revenue for the day
+        ArrayList<ArrayList<String>> query4revenue = database.selectValues(String.format(
+                "SELECT SUM(Payment.total_amount) " +
+                "FROM Payment, Orders, Booking " +
+                        "WHERE Payment.order_id = Orders.order_id AND " +
+                        "Orders.booking_id = Booking.booking_id AND " +
+                        "DATE(Booking.booking_date_time) = '%s'", formattedDate));
+
+        // Displaying total revenue on the screen
+        revenueStr.setText("Today's revenue: £" + query4revenue.get(0).get(0));
+
+        // Get total number of bookings
+        ArrayList<ArrayList<String>> query4bookings = database.selectValues(String.format("SELECT COUNT(booking_date_time) FROM Booking WHERE DATE(booking_date_time) = '%s'", formattedDate));
+
+        // Displaying total count of number of bookings for the day
+        numBookings.setText("Bookings today: " + query4bookings.get(0).get(0));
 
         String query = "SELECT TIME(booking_date_time) AS booking_time, SUM(number_of_guests) AS total_guests FROM Booking WHERE DATE(booking_date_time) = '%s' GROUP BY TIME(booking_date_time) ORDER BY booking_time;".formatted(Date.valueOf(date));
         ArrayList<ArrayList<String>> graphValues = database.selectValues(query);

@@ -69,40 +69,22 @@ public class DashBoardController {
 
 
     public void initialize() throws SQLException {
-
-
-
         LocalDate today = LocalDate.now(); // Get today's date
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedDate = today.format(formatter);
-
-        // check the DatePicker input is not empty and if it is, the buttons are disabled
-        datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
-            handleButtons();
-        });
-
-        // check that the date picker input is not empty
-        datePicker.focusedProperty().addListener(((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                handleButtons();
-            }
-        }));
+        date = LocalDate.parse(formattedDate, formatter);
+        datePicker.setValue(date);
 
         // for each selected date we will extract the time and the total number of guests during that period
         Database database = new Database();
 
         //Get total revenue for the day
-//        ArrayList<ArrayList<String>> query4revenue = database.selectValues(String.format(
-//                "SELECT SUM(Payment.total_amount) " +
-//                "FROM Payment, Orders, Booking " +
-//                        "WHERE Payment.order_id = Orders.order_id AND " +
-//                        "Orders.booking_id = Booking.booking_id AND " +
-//                        "DATE(Booking.booking_date_time) = '%s'".formatted(formattedDate)));
-
-        String revenueQuery = "SELECT SUM(Payment.total_amount) FROM Payment, Orders, Booking WHERE Payment.order_id = Orders.order_id AND  Orders.booking_id = Booking.booking_id AND DATE(Booking.booking_date_time) = '%s';".formatted(formattedDate);
-        System.out.println(revenueQuery);
-        ArrayList<ArrayList<String>> query4revenue = database.selectValues(revenueQuery);
-
+        ArrayList<ArrayList<String>> query4revenue = database.selectValues(String.format(
+                "SELECT SUM(Payment.total_amount) " +
+                "FROM Payment, Orders, Booking " +
+                        "WHERE Payment.order_id = Orders.order_id AND " +
+                        "Orders.booking_id = Booking.booking_id AND " +
+                        "DATE(Booking.booking_date_time) = '%s'".formatted(formattedDate)));
 
         // Displaying total revenue on the screen
         revenueStr.setText("Today's revenue: £" + query4revenue.get(0).get(0));
@@ -136,6 +118,7 @@ public class DashBoardController {
 
         // add the values to the line chart
         lineChart.getData().add(xyValues);
+        submit();
     }
 
     // parsing the date input from string to date
@@ -149,21 +132,11 @@ public class DashBoardController {
             return null;
         }
     }
-
-
-    public void handleButtons() {
-        // we need to also ensure that the inputted text is in the date format
-        LocalDate date = datePicker.getValue();
-        boolean disableButtons = date == null;
-        submitButton.setDisable(disableButtons);
-        resetButton.setDisable(disableButtons);
-    }
     public void submit() throws SQLException {
         LocalDate date = datePicker.getValue();
 
 
         String query = "SELECT * FROM Booking WHERE DATE(booking_date_time) = '%s' ORDER BY DATE(booking_date_time);".formatted(date);
-        System.out.println(query);
         Database db = new Database();
 
         ArrayList<ArrayList<String>> values = db.selectValues(query);
@@ -177,7 +150,6 @@ public class DashBoardController {
                 String requirements = rows.get(5);
                 Booking booking = new Booking(bookingId, custId, bookingDateTime, numCustomers, wheelChair, requirements);
                 bookings.add(booking);
-
         }
             addBookingForm();
 
@@ -205,7 +177,6 @@ public class DashBoardController {
     public void swipeRight() {
         index++;
         addBookingForm();
-        System.out.println("Swipe right");
     }
 
     @FXML
@@ -215,7 +186,6 @@ public class DashBoardController {
         }
         index--;
         addBookingForm();
-        System.out.println("Swipe left");
     }
 
     public void reset(MouseEvent mouseEvent) {

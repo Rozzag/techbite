@@ -48,7 +48,6 @@ public class LoginController {
         ArrayList<ArrayList<String>> credentials = dataBase.selectValues(query);
         ArrayList<String> credential = credentials.get(0);
 
-
         if (credential.get(3).equals(passWord.getText())) {
             // if the password is correct, then we move to the main menu, else show error
             userName.setText("");

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="482.0" prefWidth="808.0" styleClass="background" stylesheets="@lightgrey.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.DashBoardController">
+<Pane prefHeight="482.0" prefWidth="808.0" styleClass="background" stylesheets="@../../../../../../../../../demo/src/main/resources/com/example/demo/lightgrey.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.DashBoardController">
    <children>
       <DatePicker fx:id="datePicker" layoutX="125.0" layoutY="33.0" prefHeight="37.0" prefWidth="201.0" />
       <Label layoutX="14.0" layoutY="38.0" text="Enter a date:">
@@ -21,14 +21,14 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="submitButton" layoutX="361.0" layoutY="33.0" mnemonicParsing="false" onMouseClicked="#submit" prefHeight="17.0" prefWidth="92.0" stylesheets="@submitbutton.css" text="Submit" />
-      <Button fx:id="resetButton" layoutX="468.0" layoutY="33.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="92.0" stylesheets="@resetbutton.css" text="Reset" />
-      <LineChart fx:id="lineChart" layoutY="136.0" prefHeight="211.0" prefWidth="415.0">
+      <Button fx:id="submitButton" layoutX="361.0" layoutY="33.0" mnemonicParsing="false" onMouseClicked="#submit" prefHeight="17.0" prefWidth="92.0" stylesheets="@../../../../../../../../../demo/src/main/resources/com/example/demo/submitbutton.css" text="Submit" />
+      <Button fx:id="resetButton" layoutX="468.0" layoutY="33.0" mnemonicParsing="false" onMouseClicked="#reset" prefHeight="37.0" prefWidth="92.0" stylesheets="@../../../../../../../../../demo/src/main/resources/com/example/demo/resetbutton.css" text="Reset" />
+      <LineChart fx:id="lineChart" layoutY="136.0" prefHeight="211.0" prefWidth="415.0" title="Guests over Time">
         <xAxis>
-          <CategoryAxis side="BOTTOM" />
+          <CategoryAxis label="Time Interval" side="BOTTOM" />
         </xAxis>
         <yAxis>
-          <NumberAxis side="LEFT" />
+          <NumberAxis label="Guests" side="LEFT" />
         </yAxis>
       </LineChart>
       <GridPane layoutX="414.0" layoutY="134.0" prefHeight="278.0" prefWidth="258.0">
@@ -43,8 +43,8 @@
           <RowConstraints maxHeight="73.66668701171875" minHeight="8.333343505859375" prefHeight="18.333343505859375" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="swipeLeft" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="&lt;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Button fx:id="swipeRight" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="left" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#swipeLeft" onMousePressed="#swipeLeft" text="&lt;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="right" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#swipeRight" onMousePressed="#swipeRight" text="&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <Label GridPane.columnIndex="1" />
             <Label text="Time:" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP" />
             <Label text="BookingID:" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="BASELINE">
@@ -78,8 +78,10 @@
             </Label>
          </children>
       </GridPane>
+      <Label fx:id="errorMessage" layoutX="114.0" layoutY="80.0" prefHeight="37.0" prefWidth="223.0" textFill="#dd2121">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
    </children>
-   <padding>
-      <Insets left="100.0" top="100.0" />
-   </padding>
 </Pane>

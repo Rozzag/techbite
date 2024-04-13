@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DashBoardController {
 
@@ -33,6 +34,12 @@ public class DashBoardController {
     private DatePicker datePicker;
 
     @FXML
+    private Button left;
+
+    @FXML
+    private Button right;
+
+    @FXML
     private Label time;
 
     @FXML
@@ -46,6 +53,10 @@ public class DashBoardController {
 
     @FXML
     private Label requirement;
+    @FXML
+    private Label revenueStr;
+    @FXML
+    private Label numBookings;
 
     private LocalDate date;
 
@@ -61,6 +72,10 @@ public class DashBoardController {
 
 
         date = LocalDate.of(2024,4,11);
+        LocalDate today = LocalDate.now(); // Get today's date
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = today.format(formatter);
+        date = LocalDate.parse(formattedDate, formatter);
         datePicker.setValue(date);
 
         // check the DatePicker input is not empty and if it is, the buttons are disabled
@@ -77,6 +92,23 @@ public class DashBoardController {
 
         // for each selected date we will extract the time and the total number of guests during that period
         Database database = new Database();
+
+        //Get total revenue for the day
+        ArrayList<ArrayList<String>> query4revenue = database.selectValues(String.format(
+                "SELECT SUM(Payment.total_amount) " +
+                "FROM Payment, Orders, Booking " +
+                        "WHERE Payment.order_id = Orders.order_id AND " +
+                        "Orders.booking_id = Booking.booking_id AND " +
+                        "DATE(Booking.booking_date_time) = '%s'", formattedDate));
+
+        // Displaying total revenue on the screen
+        revenueStr.setText("Today's revenue: £" + query4revenue.get(0).get(0));
+
+        // Get total number of bookings
+        ArrayList<ArrayList<String>> query4bookings = database.selectValues(String.format("SELECT COUNT(booking_date_time) FROM Booking WHERE DATE(booking_date_time) = '%s'", formattedDate));
+
+        // Displaying total count of number of bookings for the day
+        numBookings.setText("Bookings today: " + query4bookings.get(0).get(0));
 
         String query = "SELECT TIME(booking_date_time) AS booking_time, SUM(number_of_guests) AS total_guests FROM Booking WHERE DATE(booking_date_time) = '%s' GROUP BY TIME(booking_date_time) ORDER BY booking_time;".formatted(Date.valueOf(date));
         ArrayList<ArrayList<String>> graphValues = database.selectValues(query);
@@ -97,7 +129,6 @@ public class DashBoardController {
             String time = row.get(0);
             int guests = Integer.parseInt(row.get(1));
             xyValues.getData().add(new XYChart.Data<>(time, guests));
-
         }
 
         // add the values to the linechart
@@ -143,21 +174,44 @@ public class DashBoardController {
                 String requirements = rows.get(5);
                 Booking booking = new Booking(bookingId, custId, bookingDateTime, numCustomers, wheelChair, requirements);
                 bookings.add(booking);
-        }
 
+        }
+            addBookingForm();
+
+
+
+
+    }
+
+    public void addBookingForm() {
         // for each booking, we will add the details to the labels in the grid pane section
-        bookingId.setText(String.valueOf(bookings.get(index).getBookingID()));
-        guests.setText(String.valueOf(bookings.get(index).getNumOfDiners()));
-        int wheelChair = bookings.get(index).getWheelchair();
+        bookingId.setText(String.valueOf(bookings.get(index%bookings.size()).getBookingID()));
+        guests.setText(String.valueOf(bookings.get(index%bookings.size()).getNumOfDiners()));
+        int wheelChair = bookings.get(index%bookings.size()).getWheelchair();
         if (wheelChair == 1) {
             wheelchair.setText("Yes");
         } else if (wheelChair == 0) {
-             wheelchair.setText("No");
+            wheelchair.setText("No");
         }
-        requirement.setText(bookings.get(index).getSpecialRequest());
-        time.setText(bookings.get(index).getDt());
+        requirement.setText(bookings.get(index%bookings.size()).getSpecialRequest());
+        time.setText(bookings.get(index%bookings.size()).getDt());
 
+    }
 
+    @FXML
+    public void swipeRight() {
+        index++;
+        addBookingForm();
+        System.out.println("Swipe right");
+    }
 
+    @FXML
+    public void swipeLeft() {
+        if (index == 0) {
+            index = bookings.size()-1;
+        }
+        index--;
+        addBookingForm();
+        System.out.println("Swipe left");
     }
 }

@@ -92,13 +92,16 @@ public class DashBoardController {
         Database database = new Database();
 
         //Get total revenue for the day
-        ArrayList<ArrayList<String>> query4revenue = database.selectValues(String.format(
-                "SELECT SUM(Payment.total_amount) " +
-                "FROM Payment, Orders, Booking " +
-                        "WHERE Payment.order_id = Orders.order_id AND " +
-                        "Orders.booking_id = Booking.booking_id AND " +
-                        "DATE(Booking.booking_date_time) = '%s'".formatted(formattedDate)));
-        String revenueQuery = ""
+//        ArrayList<ArrayList<String>> query4revenue = database.selectValues(String.format(
+//                "SELECT SUM(Payment.total_amount) " +
+//                "FROM Payment, Orders, Booking " +
+//                        "WHERE Payment.order_id = Orders.order_id AND " +
+//                        "Orders.booking_id = Booking.booking_id AND " +
+//                        "DATE(Booking.booking_date_time) = '%s'".formatted(formattedDate)));
+
+        String revenueQuery = "SELECT SUM(Payment.total_amount) FROM Payment, Orders, Booking WHERE Payment.order_id = Orders.order_id AND  Orders.booking_id = Booking.booking_id AND DATE(Booking.booking_date_time) = '%s';".formatted(formattedDate);
+        System.out.println(revenueQuery);
+        ArrayList<ArrayList<String>> query4revenue = database.selectValues(revenueQuery);
 
 
         // Displaying total revenue on the screen
@@ -131,7 +134,7 @@ public class DashBoardController {
             xyValues.getData().add(new XYChart.Data<>(time, guests));
         }
 
-        // add the values to the linechart
+        // add the values to the line chart
         lineChart.getData().add(xyValues);
     }
 

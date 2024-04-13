@@ -36,6 +36,30 @@ public class Staff {
         return role;
     }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void updateRole(int id, String newRole) throws SQLException {
+        Database db = new Database("in2033t01_a", "CtYS1azKU-8");
+
+        db.insertValues(String.format("UPDATE Staff " +
+                "SET role = '%s' " +
+                "WHERE staff_id = %d", newRole, id));
+
+        db.close();
+    }
+
+    public void updatePassword(int id, String newPassword) throws SQLException {
+        Database db = new Database("in2033t01_a", "CtYS1azKU-8");
+
+        db.insertValues(String.format("UPDATE Credentials " +
+                "SET password = '%s' " +
+                "WHERE staff_id = %d", newPassword, id));
+
+        db.close();
+    }
+
     public static List<Staff> getAllStaff() throws SQLException {
         List<Staff> staff = new ArrayList<>();
 

@@ -75,7 +75,9 @@ public class MenuController implements Initializable {
     }
 
     @FXML
-    private void handleSubmitButtonAction(){}
+    private void handleSubmitButtonAction(){
+
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

@@ -1,140 +1,48 @@
 package com.example.demo;
 
+import com.example.demo.supportclasses.Staff;
+import javafx.beans.Observable;
+import javafx.beans.value.ObservableListValue;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
+import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.io.IOException;
-import java.util.Objects;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
 
-public class AdminPageController {
+public class AdminPageController implements Initializable {
     @FXML
-    private Button dashboard;
+    private TableColumn<Staff, String> names;
 
     @FXML
-    private Button menu;
+    private TableColumn<Staff, String> roles;
 
     @FXML
-    private Button table;
+    private TableView<Staff> staffTable;
 
-    @FXML
-    private Button payment;
+    private ObservableList<Staff> staff= FXCollections.observableArrayList();
 
-    @FXML
-    private Button admin;
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
 
-    @FXML
-    private BorderPane borderPane;
-
-    @FXML
-    private Button logoutButton;
-
-
-    private Button previousSelectedButton = null;
-
-    // normal button
-    public void highlightedButton(Button button) {
-        button.setStyle("-fx-background-color: #D9D9D9; -fx-text-fill: #2B3336;");
-    }
-
-    // highlighted button
-    public void normalButton(Button button) {
-        button.setStyle("-fx-background-color: #2B3336; -fx-text-fill: #D9D9D9;");
-    }
-
-    // initialize the main page for the administrator to be the dashboard
-    public void initialize() throws IOException {
-        // the previous button will revert to its normal colour
-        if (this.previousSelectedButton != null) {
-            normalButton(this.previousSelectedButton);
+        try {
+            for(Staff s: Staff.getAllStaff()){
+                staff.add(s);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        highlightedButton(dashboard);
-        this.previousSelectedButton = dashboard;
 
-        // add the tables page to the centre of the border pane
-        Node dashboard = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("dashboard.fxml")));
+//        names.setCellFactory(new PropertyValueFactory<Staff, String>("name"));
+//        roles.setCellFactory(new PropertyValueFactory<Staff, String>("role"));
 
-        borderPane.setCenter(dashboard);
-    }
-
-
-
-    public void dashboardPage(MouseEvent mouseEvent) throws IOException {
-        // the previous button will revert to its normal colour
-        if (this.previousSelectedButton != null) {
-            normalButton(this.previousSelectedButton);
-        }
-        highlightedButton(dashboard);
-        this.previousSelectedButton = dashboard;
-
-        // add the tables page to the centre of the border pane
-        Node dashboard = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("dashboard.fxml")));
-
-        borderPane.setCenter(dashboard);
-    }
-
-    public void tablesPage(MouseEvent mouseEvent) throws IOException {
-        if (this.previousSelectedButton != null) {
-            normalButton(this.previousSelectedButton);
-
-        }
-        highlightedButton(table);
-        this.previousSelectedButton = table;
-
-        // add the tables page to the centre of the border pane
-        Node tablesPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("table-page.fxml")));
-
-        borderPane.setCenter(tablesPage);
-
-        // add the table layout to the admin page
-        Node tablePage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("table.fxml")));
-        borderPane.setRight(tablePage);
+        staffTable.setItems(staff);
 
     }
-
-    public void menusPage(MouseEvent mouseEvent) throws IOException {
-        if (this.previousSelectedButton != null) {
-            normalButton(this.previousSelectedButton);
-        }
-        highlightedButton(menu);
-        this.previousSelectedButton = menu;
-
-        Node menuPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("menu.fxml")));
-        borderPane.setCenter(menuPage);
-    }
-
-    public void adminPage() throws IOException {
-        if (this.previousSelectedButton != null) {
-            normalButton(this.previousSelectedButton);
-        }
-        highlightedButton(admin);
-        this.previousSelectedButton = admin;
-
-        // add the page for booking customre in
-        Node adminPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("admin-page.fxml")));
-        borderPane.setCenter(adminPage);
-
-
-
-
-    }
-
-
-    public void logout(MouseEvent mouseEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("login.fxml"));
-        Stage stage = LancasterPage.stage;
-        Scene scene = new Scene(fxmlLoader.load());
-
-        stage.setTitle("Lancaster Restaurant");
-        stage.setScene(scene);
-        stage.setFullScreen(true);
-        stage.show();
-    }
-
-
 }

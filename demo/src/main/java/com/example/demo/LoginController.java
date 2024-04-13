@@ -39,8 +39,8 @@ public class LoginController {
     @FXML
     protected void onButtonClick() throws IOException, SQLException {
         boolean isAdmin = false;
-        // connect to database to authenticate user
 
+        // connect to database to authenticate user
         Database dataBase = new Database();
         String query = "SELECT * FROM Credentials WHERE username='%s';".formatted(userName.getText());
         ArrayList<ArrayList<String>> passwords = dataBase.selectValues(query);

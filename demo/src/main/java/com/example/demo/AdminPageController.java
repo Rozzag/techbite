@@ -90,6 +90,11 @@ public class AdminPageController {
         Node tablesPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("table-page.fxml")));
 
         borderPane.setCenter(tablesPage);
+
+        // add the table layout to the admin page
+        Node tablePage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("table.fxml")));
+        borderPane.setRight(tablePage);
+
     }
 
     public void menusPage(MouseEvent mouseEvent) throws IOException {
@@ -110,8 +115,13 @@ public class AdminPageController {
         highlightedButton(admin);
         this.previousSelectedButton = admin;
 
-        Node menuPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("admin-page.fxml")));
-        borderPane.setCenter(menuPage);
+        // add the page for booking customre in
+        Node adminPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("admin-page.fxml")));
+        borderPane.setCenter(adminPage);
+
+
+
+
     }
 
 

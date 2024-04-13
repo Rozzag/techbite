@@ -46,6 +46,12 @@ public class LoginController {
         Database dataBase = new Database();
         String query = "SELECT * FROM Credentials WHERE username='%s';".formatted(userName.getText());
         ArrayList<ArrayList<String>> credentials = dataBase.selectValues(query);
+
+        if (credentials.isEmpty()) {
+            errorLabel.setText("Incorrect username or password");
+            return;
+        }
+
         ArrayList<String> credential = credentials.get(0);
 
         if (credential.get(3).equals(passWord.getText())) {
@@ -57,8 +63,7 @@ public class LoginController {
 
             String role = staff.getRole();
 
-            if (role.equals("Admin")) {
-
+            if (role.equals("Maitre d")) {
                 FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("admin-menu.fxml"));
                 Stage stage = LancasterPage.stage;
                 Scene scene = new Scene(fxmlLoader.load());
@@ -72,24 +77,13 @@ public class LoginController {
                 FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("waiter-page.fxml"));
                 Stage stage = LancasterPage.stage;
                 Scene scene = new Scene(fxmlLoader.load());
-                scene.getStylesheets().add(Objects.requireNonNull(LoginController.class.getResource("stackbutton.css")).toExternalForm());
 
                 stage.setTitle("Lancaster Restaurant");
                 stage.setScene(scene);
                 stage.setFullScreen(true);
                 stage.show();
 
-        } else if (role.equals("Maître d")) {
-                FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("maitred-page.fxml"));
-                Stage stage = LancasterPage.stage;
-                Scene scene = new Scene(fxmlLoader.load());
-                scene.getStylesheets().add(Objects.requireNonNull(LoginController.class.getResource("stackbutton.css")).toExternalForm());
-
-                stage.setTitle("Lancaster Restaurant");
-                stage.setScene(scene);
-                stage.setFullScreen(true);
-                stage.show();
-            }
+        }
 
 
 

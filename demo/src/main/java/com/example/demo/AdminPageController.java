@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AdminPageController implements Initializable {
@@ -26,23 +27,25 @@ public class AdminPageController implements Initializable {
     @FXML
     private TableView<Staff> staffTable;
 
-    private ObservableList<Staff> staff= FXCollections.observableArrayList();
+    private ObservableList<Staff> staff = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         try {
-            for(Staff s: Staff.getAllStaff()){
+            List<Staff> staffList = Staff.getAllStaff();
+
+            for(Staff s: staffList){
                 staff.add(s);
             }
+
+            names.setCellValueFactory(new PropertyValueFactory<Staff, String>("name")); // Assuming you have getName()
+            roles.setCellValueFactory(new PropertyValueFactory<Staff, String>("role")); // Assuming you have getRole()
+
+            staffTable.setItems(staff);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-//        names.setCellFactory(new PropertyValueFactory<Staff, String>("name"));
-//        roles.setCellFactory(new PropertyValueFactory<Staff, String>("role"));
-
-        staffTable.setItems(staff);
-
     }
 }

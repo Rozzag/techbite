@@ -73,7 +73,6 @@ public class LoginController {
                 FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("admin-menu.fxml"));
                 Stage stage = LancasterPage.stage;
                 Scene scene = new Scene(fxmlLoader.load());
-                scene.getStylesheets().add(Objects.requireNonNull(LoginController.class.getResource("stackbutton.css")).toExternalForm());
 
                 stage.setTitle("Lancaster Restaurant");
                 stage.setScene(scene);

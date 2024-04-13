@@ -3,6 +3,7 @@ package com.example.demo;
 
 import com.example.demo.connectivity.Database;
 import com.example.demo.supportclasses.Staff;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,6 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
 import java.sql.*;
 
 import java.io.IOException;
@@ -48,7 +51,10 @@ public class LoginController {
         ArrayList<ArrayList<String>> credentials = dataBase.selectValues(query);
 
         if (credentials.isEmpty()) {
-            errorLabel.setText("Incorrect username or password");
+            errorLabel.setText("Username or password is incorrect");
+            PauseTransition disappearingMessage = new PauseTransition(Duration.seconds(1));
+            disappearingMessage.setOnFinished(event -> errorLabel.setText(""));
+            disappearingMessage.play();
             return;
         }
 

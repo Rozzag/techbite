@@ -139,7 +139,7 @@ public class DashBoardController {
         time.setText("");
 
         // get the date inputted into the date picker
-        LocalDate date = datePicker.getValue();
+        date = datePicker.getValue();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedDate = date.format(formatter);
         try {

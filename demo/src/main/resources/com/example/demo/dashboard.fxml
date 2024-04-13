@@ -43,8 +43,8 @@
           <RowConstraints maxHeight="73.66668701171875" minHeight="8.333343505859375" prefHeight="18.333343505859375" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="left" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#swipeLeft" onMousePressed="#swipeLeft" text="&lt;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Button fx:id="right" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#swipeRight" onMousePressed="#swipeRight" text="&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="left" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#swipeLeft"  text="&lt;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="right" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#swipeRight"  text="&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <Label GridPane.columnIndex="1" />
             <Label text="Time:" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP" />
             <Label text="BookingID:" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="BASELINE">

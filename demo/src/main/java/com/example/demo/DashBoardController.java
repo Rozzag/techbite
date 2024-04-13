@@ -9,6 +9,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -71,12 +72,9 @@ public class DashBoardController {
 
 
 
-        date = LocalDate.of(2024,4,11);
         LocalDate today = LocalDate.now(); // Get today's date
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedDate = today.format(formatter);
-        date = LocalDate.parse(formattedDate, formatter);
-        datePicker.setValue(date);
 
         // check the DatePicker input is not empty and if it is, the buttons are disabled
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -99,13 +97,15 @@ public class DashBoardController {
                 "FROM Payment, Orders, Booking " +
                         "WHERE Payment.order_id = Orders.order_id AND " +
                         "Orders.booking_id = Booking.booking_id AND " +
-                        "DATE(Booking.booking_date_time) = '%s'", formattedDate));
+                        "DATE(Booking.booking_date_time) = '%s'".formatted(formattedDate)));
+        String revenueQuery = ""
+
 
         // Displaying total revenue on the screen
         revenueStr.setText("Today's revenue: £" + query4revenue.get(0).get(0));
 
         // Get total number of bookings
-        ArrayList<ArrayList<String>> query4bookings = database.selectValues(String.format("SELECT COUNT(booking_date_time) FROM Booking WHERE DATE(booking_date_time) = '%s'", formattedDate));
+        ArrayList<ArrayList<String>> query4bookings = database.selectValues(String.format("SELECT COUNT(booking_date_time) FROM Booking WHERE DATE(booking_date_time) = '%s'".formatted(formattedDate)));
 
         // Displaying total count of number of bookings for the day
         numBookings.setText("Bookings today: " + query4bookings.get(0).get(0));
@@ -213,5 +213,15 @@ public class DashBoardController {
         index--;
         addBookingForm();
         System.out.println("Swipe left");
+    }
+
+    public void reset(MouseEvent mouseEvent) {
+        // reset all the components on the dashboard page
+        lineChart.getData().clear();
+        bookingId.setText("");
+        guests.setText("");
+        wheelchair.setText("");
+        requirement.setText("");
+        time.setText("00:00");
     }
 }

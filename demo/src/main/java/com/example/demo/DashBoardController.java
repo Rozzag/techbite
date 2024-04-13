@@ -60,7 +60,7 @@ public class DashBoardController {
 
 
 
-        date = LocalDate.of(2024,04,11);
+        date = LocalDate.of(2024,4,11);
         datePicker.setValue(date);
 
         // check the DatePicker input is not empty and if it is, the buttons are disabled

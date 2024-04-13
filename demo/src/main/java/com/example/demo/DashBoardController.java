@@ -142,6 +142,10 @@ public class DashBoardController {
 
         ArrayList<ArrayList<String>> values = db.selectValues(datePicker);
 
+        if (!bookings.isEmpty()) {
+            bookings.clear();
+        }
+
             for (ArrayList<String> rows : values) {
                 int bookingId = Integer.parseInt(rows.get(0));
                 int custId = Integer.parseInt(rows.get(1));

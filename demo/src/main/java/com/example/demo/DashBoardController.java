@@ -136,10 +136,11 @@ public class DashBoardController {
         LocalDate date = datePicker.getValue();
 
 
-        String query = "SELECT * FROM Booking WHERE DATE(booking_date_time) = '%s' ORDER BY DATE(booking_date_time);".formatted(date);
+
+        String datePicker = "SELECT * FROM Booking WHERE DATE(booking_date_time) = '%s' ORDER BY DATE(booking_date_time);".formatted(date);
         Database db = new Database();
 
-        ArrayList<ArrayList<String>> values = db.selectValues(query);
+        ArrayList<ArrayList<String>> values = db.selectValues(datePicker);
 
             for (ArrayList<String> rows : values) {
                 int bookingId = Integer.parseInt(rows.get(0));
@@ -152,7 +153,6 @@ public class DashBoardController {
                 bookings.add(booking);
         }
             addBookingForm();
-
 
 
 

@@ -21,8 +21,8 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="submitButton" layoutX="361.0" layoutY="33.0" mnemonicParsing="false" onMouseClicked="#submit" prefHeight="17.0" prefWidth="92.0" stylesheets="@../../../../../../../../../demo/src/main/resources/com/example/demo/submitbutton.css" text="Submit" />
-      <Button fx:id="resetButton" layoutX="468.0" layoutY="33.0" mnemonicParsing="false" onMouseClicked="#reset" prefHeight="37.0" prefWidth="92.0" stylesheets="@../../../../../../../../../demo/src/main/resources/com/example/demo/resetbutton.css" text="Reset" />
+      <Button fx:id="submitButton" layoutX="361.0" layoutY="33.0" mnemonicParsing="false" onMouseClicked="#submit" prefHeight="17.0" prefWidth="92.0" styleClass="background" stylesheets="@submitbutton.css" text="Submit" />
+      <Button fx:id="resetButton" layoutX="468.0" layoutY="33.0" mnemonicParsing="false" onMouseClicked="#reset" prefHeight="37.0" prefWidth="92.0" stylesheets="@resetbutton.css" text="Reset" />
       <LineChart fx:id="lineChart" layoutY="136.0" prefHeight="211.0" prefWidth="415.0" title="Guests over Time">
         <xAxis>
           <CategoryAxis label="Time Interval" side="BOTTOM" />

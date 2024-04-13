@@ -118,7 +118,6 @@ public class DashBoardController {
             String time = row.get(0);
             int guests = Integer.parseInt(row.get(1));
             xyValues.getData().add(new XYChart.Data<>(time, guests));
-
         }
 
         // add the values to the linechart

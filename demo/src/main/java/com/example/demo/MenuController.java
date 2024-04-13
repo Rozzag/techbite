@@ -31,6 +31,8 @@ public class MenuController implements Initializable {
     private VBox summary;
     @FXML
     private Button submitButton;
+    @FXML
+    private Label totalCost;
 
     private String currItem;
     private List<Order> orders = new ArrayList<>();
@@ -49,18 +51,26 @@ public class MenuController implements Initializable {
     // Show the new orders added
     private void updateOrderSummary(){
         summary.getChildren().clear();
+        double cost = 0;
         for(Order o: orders){
             HBox row = new HBox();
             Label rowLabel = new Label(o.getD().getName());
             row.getChildren().add(rowLabel);
 
             Button removeButton = new Button("REMOVE");
-            removeButton.setOnAction(event -> orders.remove(o));
+            removeButton.setOnAction(event -> {
+                orders.remove(o);
+                updateOrderSummary();
+            });
 
             row.getChildren().add(removeButton);
 
+            cost += o.getD().getPrice();
+
             summary.getChildren().add(row);
         }
+
+        totalCost.setText("Total cost: £" + cost);
     }
 
     @FXML

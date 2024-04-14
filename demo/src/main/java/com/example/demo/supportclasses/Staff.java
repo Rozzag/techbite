@@ -63,8 +63,8 @@ public class Staff {
     public void delUser() throws SQLException {
         Database db = new Database("in2033t01_a", "CtYS1azKU-8");
 
-        db.insertValues(String.format("DELETE FROM Credentials WHERE staff_id = %d", this.staffID));
-        db.insertValues(String.format("DELETE FROM Staff WHERE staff_id = %d", this.staffID));
+        db.insertValues(String.format("UPDATE Staff SET role='Dismissed' WHERE staff_id=%d", this.staffID));
+        setRole("Dismissed");
 
         db.close();
     }

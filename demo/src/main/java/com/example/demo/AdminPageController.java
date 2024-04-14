@@ -64,7 +64,6 @@ public class AdminPageController implements Initializable {
         staff.remove(selectedStaff);
         selectedStaff.delUser();
 
-        // TODO: Errors in when trying to delete staff with their staff_id in visits
         staffTable.getItems().clear();
         doTable();
     }
@@ -88,7 +87,7 @@ public class AdminPageController implements Initializable {
     @FXML
     private void addNewMemberButton() throws SQLException {
         if (!newMName.getText().isEmpty() && !newMUsername.getText().isEmpty() && !newMPass.getText().isEmpty() && newMRoleDrop.getValue() != null){
-            staff.add(Staff.addMember(newMName.getText(), newMUsername.getText(), newMPass.getText(), newMRoleDrop.getValue()));
+            staffList.add(Staff.addMember(newMName.getText(), newMUsername.getText(), newMPass.getText(), newMRoleDrop.getValue()));
 
             staffTable.getItems().clear();
             doTable();
@@ -112,7 +111,7 @@ public class AdminPageController implements Initializable {
         staff = FXCollections.observableArrayList();
 
         for(Staff s: staffList){
-            if(!s.getRole().equals("Maitre d")){
+            if(!(s.getRole().equals("Maitre d") || s.getRole().equals("Dismissed"))){
                 staff.add(s);
             }
         }
@@ -124,15 +123,17 @@ public class AdminPageController implements Initializable {
 
         staffTable.setItems(staff);
 
-        // Getting the selected staff memeber
+        // Getting the selected staff member
         staffTable.setOnMouseClicked(event -> {
             int selectedIndex = staffTable.getSelectionModel().getSelectedIndex();
             if (selectedIndex >= 0) {
                 selectedStaff = staffTable.getItems().get(selectedIndex);
             }
 
-            usernamePass.setText(selectedStaff.getName());
-            usernameRole.setText(selectedStaff.getName());
+            if (selectedStaff != null){
+                usernamePass.setText(selectedStaff.getName());
+                usernameRole.setText(selectedStaff.getName());
+            }
         });
 
         ObservableList<String> roles = FXCollections.observableArrayList(new String[] {"Waiter", "Sommelier"});

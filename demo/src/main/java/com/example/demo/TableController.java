@@ -140,8 +140,7 @@ public class TableController {
             tableAvailability.put("table" + String.valueOf(i), true);
         }
         // query to get the availability of the tables
-//        String bookedTables = "select table_id from Orders as o join Booking as b on b.booking_id = o.booking_id WHERE CURRENT_TIMESTAMP between time(b.booking_date_time) and date_add(time(b.booking_date_time), INTERVAL 30 minute) and date(b.booking_date_time)=CURRENT_DATE;";
-        String bookedTables = "select table_id from Orders as o join Booking as b on b.booking_id = o.booking_id WHERE time('20:00:00') between time(b.booking_date_time) and date_add(time(b.booking_date_time), INTERVAL 30 minute) and date(b.booking_date_time)='2024-04-13';";
+        String bookedTables = "select table_id from Orders as o join Booking as b on b.booking_id = o.booking_id WHERE CURRENT_TIMESTAMP between time(b.booking_date_time) and date_add(time(b.booking_date_time), INTERVAL 30 minute) and date(b.booking_date_time)=CURRENT_DATE;";
 
         Database db = new Database();
 

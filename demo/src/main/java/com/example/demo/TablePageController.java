@@ -19,7 +19,14 @@ public class TablePageController {
     private ComboBox<String> guestsField;
 
     @FXML
-    private ComboBox<?> initialTableField;
+    private ComboBox<String> initialTableField;
+
+    @FXML
+    private ComboBox<String> secondTableField;
+
+    @FXML
+    private ComboBox<String> thirdTableField;
+
 
     @FXML
     private TextField nameField;
@@ -34,6 +41,8 @@ public class TablePageController {
         // set the combo box for the guests
         guestsField.getItems().addAll(FXCollections.observableArrayList("1","2", "3", "4", "5", "6"));
 
+        // disable all the other combo boxes
+        secondTableField.dis
     }
 
 

@@ -94,13 +94,10 @@ public class AdminViewController {
 
         borderPane.setCenter(tablesPage);
 
-<<<<<<< HEAD
 
-=======
         Node tables = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("table.fxml")));
 
         borderPane.setRight(tables);
->>>>>>> 65d998d9989941bb490fca2fe559bcc6bb70b65f
     }
 
     public void menusPage(MouseEvent mouseEvent) throws IOException {

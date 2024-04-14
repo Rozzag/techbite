@@ -1,7 +1,7 @@
 .available {
-    -fx-background-color: GREEN;
+    -fx-fill: GREEN;
 }
 
 .booked {
-    -fx-background-color: RED;
+    -fx-fill: RED;
 }

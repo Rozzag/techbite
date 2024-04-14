@@ -24,15 +24,11 @@
                 <RowConstraints maxHeight="163.99998474121094" minHeight="4.0000152587890625" prefHeight="47.33331298828125" />
                 <RowConstraints maxHeight="163.99998474121094" minHeight="10.0" prefHeight="46.333338419596345" />
             <RowConstraints maxHeight="163.99998474121094" minHeight="10.0" prefHeight="46.333338419596345" />
+            <RowConstraints maxHeight="163.99998474121094" minHeight="10.0" prefHeight="46.333338419596345" />
                 <RowConstraints maxHeight="163.99998474121094" minHeight="10.0" prefHeight="91.33334350585938" />
             </rowConstraints>
             <children>
-                <Button fx:id="dashboard" maxHeight="100.0" maxWidth="500.0" mnemonicParsing="false" onMouseClicked="#dashboardPage" prefHeight="24.0" prefWidth="141.0" styleClass="background" stylesheets="@darkgrey.css" text="Dashboard" textAlignment="CENTER" textFill="#fff9f9" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-                    <font>
-                        <Font name="System Bold" size="16.0" />
-                    </font>
-                </Button>
-                <Button fx:id="table" maxHeight="100.0" maxWidth="500.0" mnemonicParsing="false" onMouseClicked="#tablesPage" prefHeight="24.0" prefWidth="141.0" styleClass="background" stylesheets="@darkgrey.css" text="Tables" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                <Button fx:id="table" maxHeight="100.0" maxWidth="500.0" mnemonicParsing="false" onMouseClicked="#tablesPage" prefHeight="0.0" prefWidth="170.0" styleClass="background" stylesheets="@darkgrey.css" text="Tables" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                     <font>
                         <Font name="System Bold" size="16.0" />
                     </font>
@@ -52,8 +48,18 @@
                         </ImageView>
                     </children>
                 </VBox>
-                <Button fx:id="logoutButton" mnemonicParsing="false" onMousePressed="#logout" prefHeight="40.0" prefWidth="132.0" stylesheets="@resetbutton.css" text="Logout" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-            <Button fx:id="admin" maxHeight="100.0" maxWidth="500.0" mnemonicParsing="false" onMouseClicked="#adminPage" prefHeight="24.0" prefWidth="141.0" styleClass="background" stylesheets="@darkgrey.css" text="Admin" textAlignment="CENTER" textFill="#fff9f9" GridPane.rowIndex="4">
+                <Button fx:id="logoutButton" mnemonicParsing="false" onMousePressed="#logout" prefHeight="40.0" prefWidth="132.0" stylesheets="@resetbutton.css" text="Logout" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+            <Button fx:id="admin" maxHeight="100.0" maxWidth="500.0" mnemonicParsing="false" onMouseClicked="#adminPage" prefHeight="24.0" prefWidth="141.0" styleClass="background" stylesheets="@darkgrey.css" text="Admin" textAlignment="CENTER" textFill="#fff9f9" GridPane.rowIndex="5">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+                <Button fx:id="dashboard" maxHeight="101.0" maxWidth="500.0" mnemonicParsing="false" onMouseClicked="#dashboardPage" prefHeight="5.0" prefWidth="170.0" styleClass="background" stylesheets="@darkgrey.css" text="Dashboard" textAlignment="CENTER" textFill="#fff9f9" GridPane.rowIndex="1">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                </Button>
+            <Button fx:id="booking" maxHeight="100.0" maxWidth="500.0" mnemonicParsing="false" onMouseClicked="#dashboardPage" onMousePressed="#bookingPage" prefHeight="24.0" prefWidth="141.0" styleClass="background" stylesheets="@darkgrey.css" text="Booking" textAlignment="CENTER" textFill="#fff9f9" GridPane.rowIndex="4">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>

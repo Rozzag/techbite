@@ -164,6 +164,43 @@ public class TableController {
             }
         }
 
+        // only allow the available tables to be moved
+        for (Rectangle rect : rectangles) {
+            if (rect.getFill().equals(Color.GREEN)) {
+                rect.setOnMousePressed(event -> {
+                    rect.setUserData(new double[]{event.getX(), event.getY()});
+                });
+
+                rect.setOnMouseDragged(event -> {
+                    double[] mousePos = (double[]) rect.getUserData();
+                    double deltaX = event.getX() - mousePos[0];
+                    double deltaY = event.getY() - mousePos[1];
+
+                    System.out.println("Dragging " + rect.getId());
+
+                    rect.setX(rect.getX() + deltaX);
+                    rect.setY(rect.getY() + deltaY);
+
+                    // Update the mouse position
+                    mousePos[0] = event.getX();
+                    mousePos[1] = event.getY();
+                });
+
+                rect.setOnMouseReleased(event -> {
+                    double[] mousePos = (double[]) rect.getUserData();
+                    double deltaX = event.getX() - mousePos[0];
+                    double deltaY = event.getY() - mousePos[1];
+
+                    rect.setX(mousePos[0] + deltaX);
+                    rect.setY(mousePos[1] + deltaY);
+
+                    // Update the mouse position
+                    mousePos[0] = event.getX();
+                    mousePos[1] = event.getY();
+                });
+            }
+        }
+
 
     }
 

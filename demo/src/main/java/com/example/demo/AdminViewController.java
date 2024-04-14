@@ -29,6 +29,9 @@ public class AdminViewController {
     private Button admin;
 
     @FXML
+    private Button booking;
+
+    @FXML
     private BorderPane borderPane;
 
     @FXML
@@ -130,6 +133,21 @@ public class AdminViewController {
         }
     }
 
+    public void bookingPage(MouseEvent mouseEvent) throws IOException {
+        if (this.previousSelectedButton != null) {
+            normalButton(this.previousSelectedButton);
+        }
+        highlightedButton(booking);
+        this.previousSelectedButton = booking;
+
+        Node bookingPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("booking.fxml")));
+        borderPane.setCenter(bookingPage);
+
+        if(borderPane.getRight() != null){
+            borderPane.setRight(null);
+        }
+    }
+
 
     public void logout(MouseEvent mouseEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("login.fxml"));
@@ -141,6 +159,4 @@ public class AdminViewController {
         stage.setFullScreen(true);
         stage.show();
     }
-
-
 }

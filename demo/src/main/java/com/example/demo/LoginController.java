@@ -55,6 +55,7 @@ public class LoginController {
             PauseTransition disappearingMessage = new PauseTransition(Duration.seconds(1));
             disappearingMessage.setOnFinished(event -> errorLabel.setText(""));
             disappearingMessage.play();
+            dataBase.close();
             return;
         }
 
@@ -96,7 +97,12 @@ public class LoginController {
 
 
         } else {
-            errorLabel.setText("Incorrect username or password");
+            errorLabel.setText("Username or password is incorrect");
+            PauseTransition disappearingMessage = new PauseTransition(Duration.seconds(1));
+            disappearingMessage.setOnFinished(event -> errorLabel.setText(""));
+            disappearingMessage.play();
+            dataBase.close();
+            return;
         }
 
         dataBase.close();

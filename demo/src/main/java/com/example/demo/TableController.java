@@ -2,7 +2,9 @@ package com.example.demo;
 
 import com.example.demo.connectivity.Database;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -12,6 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TableController {
+
+    @FXML
+    private Pane pane;
 
     @FXML
     private Label label1;
@@ -135,20 +140,25 @@ public class TableController {
             tableAvailability.put("table" + String.valueOf(i), true);
         }
         // query to get the availability of the tables
-//        String bookedTables = "select table_id from Orders as o join Booking as b on b.booking_id = o.booking_id WHERE CURRENT_TIMESTAMP between time(b.booking_date_time) and date_add(b.booking_date_time, INTERVAL 30 minute) and b.booking_date_time=CURRENT_DATE;";
-            String bookedTables = "select table_id from Orders as o join Booking as b on b.booking_id = o.booking_id WHERE time('20:00:00') between time(b.booking_date_time) and date_add(time(b.booking_date_time), INTERVAL 30 minute) and date(b.booking_date_time)='2024-04-13';";
+//        String bookedTables = "select table_id from Orders as o join Booking as b on b.booking_id = o.booking_id WHERE CURRENT_TIMESTAMP between time(b.booking_date_time) and date_add(time(b.booking_date_time), INTERVAL 30 minute) and date(b.booking_date_time)=CURRENT_DATE;";
+        String bookedTables = "select table_id from Orders as o join Booking as b on b.booking_id = o.booking_id WHERE time('20:00:00') between time(b.booking_date_time) and date_add(time(b.booking_date_time), INTERVAL 30 minute) and date(b.booking_date_time)='2024-04-13';";
+
         Database db = new Database();
 
         ArrayList<ArrayList<String>> bookedValues = db.selectValues(bookedTables);
 
         if (bookedValues.isEmpty()) {
+            db.close();
             return;
         }
+
+
 
         for (ArrayList<String> value : bookedValues) {
             String tableId = "table"+value.get(0);
             tableAvailability.put(tableId, false);
         }
+
 
         // assign the table to red if unavailable
         for (Map.Entry<String, Boolean> val : tableAvailability.entrySet()) {
@@ -167,41 +177,101 @@ public class TableController {
         // only allow the available tables to be moved
         for (Rectangle rect : rectangles) {
             if (rect.getFill().equals(Color.GREEN)) {
+
+                /*
                 rect.setOnMousePressed(event -> {
                     rect.setUserData(new double[]{event.getX(), event.getY()});
                 });
 
                 rect.setOnMouseDragged(event -> {
                     double[] mousePos = (double[]) rect.getUserData();
+
+                    double oldX = rect.getX();
+                    double oldY = rect.getY();
+
                     double deltaX = event.getX() - mousePos[0];
                     double deltaY = event.getY() - mousePos[1];
-
-                    System.out.println("Dragging " + rect.getId());
 
                     rect.setX(rect.getX() + deltaX);
                     rect.setY(rect.getY() + deltaY);
 
-                    // Update the mouse position
-                    mousePos[0] = event.getX();
-                    mousePos[1] = event.getY();
+
+                    // check if the rectangles will collide
+                    if (collide(rect)) {
+                        System.out.println("collision detected");
+                        // move the rectangles away
+                        rect.setX(oldX);
+                        rect.setY(oldY);
+                    }
+
+                    mousePos[0] = event.getX() - rect.getX();
+                    mousePos[1] = event.getY() - rect.getY();
+                });
+                 */
+
+                rect.setOnMousePressed(event -> {
+                    // Store the initial mouse offset from the rectangle's top-left corner
+                    rect.setUserData(new double[]{event.getX() - rect.getX(), event.getY() - rect.getY()});
                 });
 
-                rect.setOnMouseReleased(event -> {
-                    double[] mousePos = (double[]) rect.getUserData();
-                    double deltaX = event.getX() - mousePos[0];
-                    double deltaY = event.getY() - mousePos[1];
+                rect.setOnMouseDragged(event -> {
+                    double[] mouseOffset = (double[]) rect.getUserData();
 
-                    rect.setX(mousePos[0] + deltaX);
-                    rect.setY(mousePos[1] + deltaY);
+                    // Calculate the new position using the initial offset
+                    double newX = event.getX() - mouseOffset[0];
+                    double newY = event.getY() - mouseOffset[1];
 
-                    // Update the mouse position
-                    mousePos[0] = event.getX();
-                    mousePos[1] = event.getY();
+                    // Store old position to revert in case of a collision
+                    double oldX = rect.getX();
+                    double oldY = rect.getY();
+
+                    // Move the rectangle to the new position
+                    rect.setX(newX);
+                    rect.setY(newY);
+
+                    // Check if the rectangles will collide
+                    if (collide(rect)) {
+                        System.out.println("Collision detected");
+                        // Revert to the old position if collision is detected
+                        rect.setX(oldX);
+                        rect.setY(oldY);
+                    }
                 });
+
+
             }
         }
 
+        db.close();
 
+    }
+
+    // check a rectangle is not colliding with another one in the pane
+    public boolean collide(Rectangle rectangle) {
+        for (Node node : pane.getChildren()) {
+            // check each node in the pane and check if they are near the inputted rectangle
+            if (node instanceof Rectangle && node != rectangle) {
+                Rectangle closeRect = (Rectangle) node;
+                // find if the distance between the centre of the rectangles is less than or equal to 50
+
+                // centre for original rectangle
+                double centreOriginalX = rectangle.getX() + (rectangle.getWidth()/2);
+                double centreOriginalY = rectangle.getY() + (rectangle.getHeight()/2);
+
+                // centre for close rectangle
+                double centreCloseX = closeRect.getX() + (closeRect.getWidth()/2);
+                double centreCloseY = closeRect.getY() + (closeRect.getHeight()/2);
+
+                double dist = Math.sqrt(Math.pow(centreCloseX - centreOriginalX, 2) + Math.pow(centreCloseY - centreOriginalY, 2));
+
+                if (dist <= 50) {
+                    // the rectangles are going to collide
+                    return true;
+
+                }
+            }
+        }
+        return false;
     }
 
 }

@@ -1,24 +1,40 @@
 package com.example.demo;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+public class TablePageController {
 
-public class TablePageController implements Initializable {
     @FXML
-    private ComboBox<Integer> tabDrop;
+    private TextArea additionalInfoField;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        ObservableList<Integer> tables = FXCollections.observableArrayList();
-        for (int i = 1; i < 16; i++){
-            tables.add(i);
-        }
-        tabDrop.setItems(tables);
+    @FXML
+    private Button allocateButton;
+
+    @FXML
+    private ComboBox<String> guestsField;
+
+    @FXML
+    private ComboBox<?> initialTableField;
+
+    @FXML
+    private TextField nameField;
+
+    @FXML
+    private TextField phoneNumberField;
+
+    public void initialize() {
+        // disable the allocate button
+        allocateButton.setDisable(true);
+
+        // set the combo box for the guests
+        guestsField.getItems().addAll(FXCollections.observableArrayList("1","2", "3", "4", "5", "6"));
+
     }
+
+
 }

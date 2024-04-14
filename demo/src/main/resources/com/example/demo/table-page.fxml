@@ -13,32 +13,29 @@
    <children>
       <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="415.0" prefWidth="605.0" styleClass="background" stylesheets="@lightgrey.css">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.66665649414062" minWidth="10.0" prefWidth="97.33335367838542" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="163.66668701171875" minWidth="10.0" prefWidth="84.99997965494792" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.0" minWidth="10.0" prefWidth="100.66667683919269" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="223.0" minWidth="0.0" prefWidth="155.33331298828125" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="320.66666666666663" minWidth="10.0" prefWidth="166.66668701171875" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.66665649414062" minWidth="10.0" prefWidth="110.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="163.66668701171875" minWidth="10.0" prefWidth="128.66666666666669" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.0" minWidth="10.0" prefWidth="177.9999796549479" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="223.0" minWidth="0.0" prefWidth="100.666737874349" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="320.66666666666663" minWidth="10.0" prefWidth="91.99992879231763" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="73.0" minHeight="10.0" prefHeight="64.6666768391927" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="97.99999999999999" minHeight="10.0" prefHeight="94.66665649414061" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="103.99998982747394" minHeight="10.0" prefHeight="93.33333333333331" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="156.66667683919275" minHeight="10.0" prefHeight="139.33333333333337" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="121.66664632161456" minHeight="10.0" prefHeight="121.66664632161456" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="156.66667683919275" minHeight="10.0" prefHeight="113.66668701171875" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="74.66665649414062" minHeight="10.0" prefHeight="16.66668701171875" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
 
-            <TextField prefHeight="25.0" prefWidth="50.0" promptText="Name" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <TextField promptText="Phone Number" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-             <ComboBox prefWidth="150.0" promptText="Guests" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.valignment="TOP">
-                 <items>
-                     
-                 </items>
-             </ComboBox>
-
-             <ComboBox fx:id="tabDrop" prefWidth="150.0" promptText="Table" GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.valignment="TOP" />
-            <TextArea prefHeight="50.0" prefWidth="100.0" promptText="Additional Information" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="88.0" styleClass="background" stylesheets="@submitbutton.css" text="Button" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            <TextField fx:id="nameField" prefHeight="25.0" prefWidth="50.0" promptText="Name" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <TextField fx:id="phoneNumberField" prefHeight="25.0" prefWidth="133.0" promptText="Phone Number" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <TextArea fx:id="additionalInfoField" prefHeight="141.0" prefWidth="163.0" promptText="Additional Information" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            <Button fx:id="allocateButton" mnemonicParsing="false" prefHeight="37.0" prefWidth="88.0" styleClass="background" stylesheets="@submitbutton.css" text="Allocate" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
+            <ComboBox fx:id="guestsField" prefWidth="150.0" promptText="Guests" GridPane.rowIndex="2" />
+            <ComboBox fx:id="initialTableField" prefWidth="150.0" promptText="Initial Table" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+            <ComboBox prefWidth="150.0" promptText="Second Table" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ComboBox prefWidth="150.0" promptText="Third Table" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
          </children>
       </GridPane>
    </children>

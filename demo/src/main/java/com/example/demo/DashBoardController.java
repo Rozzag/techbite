@@ -209,7 +209,7 @@ public class DashBoardController {
             if (!values.isEmpty()) {
                 for (ArrayList<String> rows : values) {
                     int bookingId = Integer.parseInt(rows.get(0));
-                    int custId = Integer.parseInt(rows.get(1));
+                    String custId = rows.get(1);
                     String bookingDateTime = rows.get(2).split(" ")[1];
                     int numCustomers = Integer.parseInt(rows.get(3));
                     int wheelChair = Integer.parseInt(rows.get(4));

@@ -60,6 +60,8 @@ public class Database {
         return results;
     }
 
+
+
     /**
      * prints out the row of a given table with some conditions
      * @param tableName
@@ -84,6 +86,17 @@ public class Database {
 
     }
 
+    public boolean justExecute(String query) throws SQLException {
+        PreparedStatement pstm = connection.prepareStatement(query);
+
+        int update = pstm.executeUpdate(query);
+
+        if (update >= 1) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean insertValues(String query) throws SQLException {
 
         PreparedStatement pstm = connection.prepareStatement(query);
@@ -102,6 +115,7 @@ public class Database {
 
 
     }
+
 
     public ArrayList<ArrayList<String>> selectValues(String query) throws SQLException {
         PreparedStatement pstm = connection.prepareStatement(query);

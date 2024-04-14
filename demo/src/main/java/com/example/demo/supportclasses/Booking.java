@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Booking {
     private int BookingID;
-    private int CustomerID;
+    private String CustomerID;
     private String dt;
     private int numOfDiners;
     private int wheelchair;
@@ -23,9 +23,9 @@ public class Booking {
     public static int bookingId = 17;
     public static int customerId = 17;
 
-    private int custId;
+    private String custId;
 
-    public Booking(int bookingID, int customerID, String dt, int numOfDiners, int wheelchair, String specialRequest, String name, String customerPhoneNum) {
+    public Booking(int bookingID, String customerID, String dt, int numOfDiners, int wheelchair, String specialRequest, String name, String customerPhoneNum) {
         BookingID = bookingID;
         CustomerID = customerID;
         this.dt = dt;
@@ -36,7 +36,7 @@ public class Booking {
         this.customerPhoneNum = customerPhoneNum;
     }
 
-    public Booking(int bookingId, int custId, String bookingDateTime, int numCustomers, int wheelChair, String requirements) {
+    public Booking(int bookingId, String custId, String bookingDateTime, int numCustomers, int wheelChair, String requirements) {
         this.BookingID = bookingId;
         this.custId = custId;
         this.dt = bookingDateTime;
@@ -78,7 +78,7 @@ public class Booking {
         // insert into a list of bookings
         for (ArrayList<String> rows : bookingValues) {
             int bookingId = Integer.parseInt(rows.get(0));
-            int custId = Integer.parseInt(rows.get(1));
+            String custId = rows.get(1);
             String bookingDateTime = rows.get(2);
             int numCustomers = Integer.parseInt(rows.get(3));
             int wheelChair = Integer.parseInt(rows.get(4));
@@ -89,7 +89,7 @@ public class Booking {
         return bookings;
     }
 
-    public int getCustId() {
+    public String getCustId() {
         return custId;
     }
 
@@ -97,7 +97,7 @@ public class Booking {
         return BookingID;
     }
 
-    public int getCustomerID() {
+    public String getCustomerID() {
         return CustomerID;
     }
 

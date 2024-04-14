@@ -26,6 +26,14 @@ public class Database {
         }
     }
 
+    public Database (String user, String pass) {
+        try {
+            connection = DriverManager.getConnection(CONN_STRING, user, pass);
+        } catch (SQLException e) {
+            System.err.println("There was an error connecting to the database" + e.getMessage());
+        }
+    }
+
     /**
      * prints out a table to the console from a given query
      * @param rs type ResultSet

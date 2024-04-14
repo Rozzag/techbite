@@ -32,10 +32,10 @@
             <TextField fx:id="phoneNumberField" prefHeight="25.0" prefWidth="133.0" promptText="Phone Number" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <TextArea fx:id="additionalInfoField" prefHeight="141.0" prefWidth="163.0" promptText="Additional Information" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
             <Button fx:id="allocateButton" mnemonicParsing="false" prefHeight="37.0" prefWidth="88.0" styleClass="background" stylesheets="@submitbutton.css" text="Allocate" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
-            <ComboBox fx:id="guestsField" prefWidth="150.0" promptText="Guests" GridPane.rowIndex="2" />
-            <ComboBox fx:id="initialTableField" prefWidth="150.0" promptText="Initial Table" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="TOP" />
-            <ComboBox prefWidth="150.0" promptText="Second Table" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <ComboBox prefWidth="150.0" promptText="Third Table" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+            <ComboBox fx:id="guestsField" onAction="#checkGuests" prefWidth="150.0" promptText="Guests" GridPane.rowIndex="2" />
+            <ComboBox fx:id="initialTableField" onAction="#checkInitial" prefWidth="150.0" promptText="Initial Table" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+            <ComboBox fx:id="secondTableField" onAction="#checkSecond" prefWidth="150.0" promptText="Second Table" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ComboBox fx:id="thirdTableField" onAction="#checkThird" prefWidth="150.0" promptText="Third Table" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
          </children>
       </GridPane>
    </children>

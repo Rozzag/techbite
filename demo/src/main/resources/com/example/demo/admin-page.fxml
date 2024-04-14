@@ -6,10 +6,13 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
 <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.AdminPageController">
   <columnConstraints>
@@ -31,7 +34,7 @@
           <TableColumn fx:id="roles" minWidth="0.0" prefWidth="106.39996337890625" text="Role" />
         </columns>
       </TableView>
-      <Button fx:id="delButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="658.0" text="DELETE USER" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+      <Button fx:id="delButton" mnemonicParsing="false" onAction="#handleDelButton" prefHeight="26.0" prefWidth="658.0" text="DELETE USER" GridPane.columnSpan="2" GridPane.rowIndex="1" />
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
          <children>
             <Label fx:id="usernamePass" text="User" />
@@ -46,5 +49,20 @@
             <Button fx:id="changeRole" mnemonicParsing="false" onAction="#handleChangeRole" text="Change role" />
          </children>
       </HBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+         <children>
+            <AnchorPane prefHeight="86.0" prefWidth="600.0" />
+            <Label fx:id="newMemberLabel" text="New FOH member:" />
+            <HBox prefHeight="133.0" prefWidth="600.0">
+               <children>
+                  <TextField fx:id="newMName" promptText="Name" />
+                  <TextField fx:id="newMUsername" promptText="Username" />
+                  <PasswordField fx:id="newMPass" promptText="Password" />
+                  <ComboBox fx:id="newMRoleDrop" prefHeight="26.0" prefWidth="150.0" promptText="Role" />
+               </children>
+            </HBox>
+            <Button fx:id="addMemberButton" mnemonicParsing="false" onAction="#addNewMemberButton" prefHeight="26.0" prefWidth="594.0" text="ADD NEW FOH MEMBER" />
+         </children>
+      </VBox>
    </children>
 </GridPane>

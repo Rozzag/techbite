@@ -38,9 +38,21 @@ public class AdminPageController implements Initializable {
     @FXML
     private ComboBox<String> roleDrop;
     @FXML
+    private Button delButton;
+    @FXML
     private Button changePass;
     @FXML
     private Button changeRole;
+    @FXML
+    private Button addMemberButton;
+    @FXML
+    private TextField newMName;
+    @FXML
+    private TextField newMUsername;
+    @FXML
+    private PasswordField newMPass;
+    @FXML
+    private ComboBox<String> newMRoleDrop;
 
     private List<Staff> staffList;
     private ObservableList<Staff> staff;
@@ -48,42 +60,69 @@ public class AdminPageController implements Initializable {
     private Staff selectedStaff;
 
     @FXML
+    private void handleDelButton() throws SQLException {
+        staff.remove(selectedStaff);
+        selectedStaff.delUser();
+
+        // TODO: Errors in when trying to delete staff with their staff_id in visits
+        staffTable.getItems().clear();
+        doTable();
+    }
+
+    @FXML
     private void handleChangePass() throws SQLException {
         selectedStaff.updatePassword(selectedStaff.getStaffID(), newPassText.getText());
-        //TODO: clear the text
+        newPassText.clear();
     }
 
     @FXML
     private void handleChangeRole() throws SQLException {
         selectedStaff.updateRole(selectedStaff.getStaffID(), roleDrop.getValue());
-        //TODO: change roles displaying on the screen
-        // TODO: clear the ComboBox
+        selectedStaff.setRole(roleDrop.getValue());
+
+        staffTable.getItems().clear();
+
+        doTable();
     }
 
+    @FXML
+    private void addNewMemberButton() throws SQLException {
+        if (!newMName.getText().isEmpty() && !newMUsername.getText().isEmpty() && !newMPass.getText().isEmpty() && newMRoleDrop.getValue() != null){
+            staff.add(Staff.addMember(newMName.getText(), newMUsername.getText(), newMPass.getText(), newMRoleDrop.getValue()));
 
+            staffTable.getItems().clear();
+            doTable();
+        } else {
+            System.out.println("Not all field have been filled!");
+        }
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             staffList = Staff.getAllStaff();
-            staff = FXCollections.observableArrayList();
-
-            for(Staff s: staffList){
-                if(!s.getRole().equals("Maitre d")){
-                    staff.add(s);
-                }
-            }
-
-            // writing rows in the table
-            IDs.setCellValueFactory(new PropertyValueFactory<Staff, Integer>("staffID")); // Assuming you have getName()
-            names.setCellValueFactory(new PropertyValueFactory<Staff, String>("name")); // Assuming you have getName()
-            roles.setCellValueFactory(new PropertyValueFactory<Staff, String>("role")); // Assuming you have getRole()
-
-            staffTable.setItems(staff);
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        doTable();
+    }
+
+    private void doTable(){
+        staff = FXCollections.observableArrayList();
+
+        for(Staff s: staffList){
+            if(!s.getRole().equals("Maitre d")){
+                staff.add(s);
+            }
+        }
+
+        // writing rows in the table
+        IDs.setCellValueFactory(new PropertyValueFactory<Staff, Integer>("staffID")); // Assuming you have getName()
+        names.setCellValueFactory(new PropertyValueFactory<Staff, String>("name")); // Assuming you have getName()
+        roles.setCellValueFactory(new PropertyValueFactory<Staff, String>("role")); // Assuming you have getRole()
+
+        staffTable.setItems(staff);
 
         // Getting the selected staff memeber
         staffTable.setOnMouseClicked(event -> {
@@ -96,8 +135,12 @@ public class AdminPageController implements Initializable {
             usernameRole.setText(selectedStaff.getName());
         });
 
-        // Setting the drop-down menu for new roles
         ObservableList<String> roles = FXCollections.observableArrayList(new String[] {"Waiter", "Sommelier"});
+
+        // Setting the drop-down menu for new roles
         roleDrop.setItems(roles);
+        newMRoleDrop.setItems(roles);
     }
+
+
 }

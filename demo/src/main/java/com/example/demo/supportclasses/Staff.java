@@ -60,6 +60,15 @@ public class Staff {
         db.close();
     }
 
+    public void delUser() throws SQLException {
+        Database db = new Database("in2033t01_a", "CtYS1azKU-8");
+
+        db.insertValues(String.format("DELETE FROM Credentials WHERE staff_id = %d", this.staffID));
+        db.insertValues(String.format("DELETE FROM Staff WHERE staff_id = %d", this.staffID));
+
+        db.close();
+    }
+
     public static List<Staff> getAllStaff() throws SQLException {
         List<Staff> staff = new ArrayList<>();
 
@@ -75,5 +84,20 @@ public class Staff {
         db.close();
 
         return staff;
+    }
+
+    public static Staff addMember(String name, String username, String password, String role) throws SQLException {
+        Database db = new Database();
+
+        int maxId = Integer.parseInt(db.selectValues("SELECT MAX(staff_id) FROM Staff").get(0).get(0)) + 1;
+
+        db.insertValues(String.format("INSERT INTO Staff VALUES (%d, '%s', '%s')", maxId, name, role));
+//        int id = Integer.parseInt(db.selectValues("SELECT * FROM Staff ORDER BY staff_id DESC LIMIT 1").get(0).get(0));
+        int maxCredID = Integer.parseInt(db.selectValues("SELECT MAX(credentials_id) FROM Credentials").get(0).get(0)) + 1;
+        db.insertValues(String.format("INSERT INTO Credentials VALUES (%d, %d, '%s', '%s')", maxCredID, maxId, username, password));
+
+        db.close();
+
+        return new Staff(maxId);
     }
 }

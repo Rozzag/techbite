@@ -115,7 +115,7 @@ public class BookingController implements Initializable {
                     bookingDate.getValue() + " " + bookingTime.getValue(),
                     bookingDiners.getValue(),
                     bookingAdditionalInfo.getText(),
-                    wheelchair, null
+                    wheelchair
             );
 
             bookingName.clear();

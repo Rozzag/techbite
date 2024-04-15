@@ -123,7 +123,7 @@ public class TablePageController {
              tables.add(thirdTableField.getValue());
          }
 
-         Booking.addBooking(name, phoneNumber, formattedDateTime,guests,additionalInfo, wheelChairNeeded, tableIds);
+         Booking.addBooking(name, phoneNumber, formattedDateTime,guests,additionalInfo, wheelChairNeeded);
          tableController.assignTableAvailability();
 
          nameField.clear();
@@ -136,6 +136,8 @@ public class TablePageController {
 
 
      }
+
+
 
     public void checkGuests() {
         // get the number of guests first

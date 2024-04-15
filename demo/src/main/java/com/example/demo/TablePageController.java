@@ -278,4 +278,8 @@ public class TablePageController {
          allocateButton.setDisable(disable);
 
      }
+
+     @FXML
+    public void needWheelChair(ActionEvent actionEvent) {
+    }
 }

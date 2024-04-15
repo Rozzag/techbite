@@ -2,6 +2,10 @@ package com.example.demo;
 
 import com.example.demo.supportclasses.Booking;
 import com.example.demo.supportclasses.Staff;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -13,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -81,6 +86,8 @@ public class BookingController implements Initializable {
     @FXML
     private Button cancelBookingButton;
 
+    private Booking selectedBooking;
+
     private boolean wheel = false;
     private ObservableList<Booking> bookings;
 
@@ -93,10 +100,10 @@ public class BookingController implements Initializable {
     @FXML
     private void handleSubmitButton() throws SQLException {
         int wheelchair = wheel ? 1 : 0;
-        boolean allEmpty = bookingDate.getValue() == null &&
-                bookingName.getText().isEmpty() &&
-                bookingPhnNumber.getText().isEmpty() &&
-                bookingTime.getValue() == null &&
+        boolean allEmpty = bookingDate.getValue() == null ||
+                bookingName.getText().isEmpty() ||
+                bookingPhnNumber.getText().isEmpty() ||
+                bookingTime.getValue() == null ||
                 bookingDiners.getValue() == null;
 
 
@@ -117,10 +124,31 @@ public class BookingController implements Initializable {
             bookingDiners.cancelEdit();
             bookingAdditionalInfo.clear();
         } else{
+            errorLabel.setText("Not all fields have been filled!");
 
+            PauseTransition disappearingMessage = new PauseTransition(Duration.seconds(1));
+            disappearingMessage.setOnFinished(event -> errorLabel.setText(""));
+            disappearingMessage.play();
         }
+
+        bookingTables.getItems().clear();
+        seeBookingTable();
     }
 
+    @FXML
+    private void handleFindBookingButton() throws SQLException {
+        bookingTables.getItems().clear();
+        seeBookingTable();
+    }
+
+    @FXML
+    private void handleCancelBookingButton() throws SQLException {
+        bookings.remove(selectedBooking);
+        selectedBooking.cancelBooking();
+
+        bookingTables.getItems().clear();
+        seeBookingTable();
+    }
 
 
     @Override
@@ -167,5 +195,12 @@ public class BookingController implements Initializable {
         bookingGuests.setCellValueFactory(new PropertyValueFactory<Booking, Integer>("numOfDiners"));
 
         bookingTables.setItems(bookings);
+
+        bookingTables.setOnMouseClicked(event -> {
+            int selectedIndex = bookingTables.getSelectionModel().getSelectedIndex();
+            if (selectedIndex >= 0) {
+                selectedBooking = bookingTables.getItems().get(selectedIndex);
+            }
+        });
     }
 }

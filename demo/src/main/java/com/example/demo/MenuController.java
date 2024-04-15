@@ -5,6 +5,8 @@ import com.example.demo.supportclasses.Menu;
 import com.example.demo.supportclasses.Order;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -33,6 +35,8 @@ public class MenuController implements Initializable {
     private Button submitButton;
     @FXML
     private Label totalCost;
+    @FXML
+    private ComboBox<Integer> tableNumber;
 
     private String currItem;
     private List<Order> orders = new ArrayList<>();
@@ -135,5 +139,13 @@ public class MenuController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        ObservableList<Integer> tables = FXCollections.observableArrayList();
+
+        for(int i = 1; i <= 15; i++){
+            tables.add(i);
+        }
+
+        tableNumber.setItems(tables);
     }
 }

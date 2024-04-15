@@ -82,6 +82,16 @@ public class Booking {
         return bookings;
     }
 
+    public void cancelBooking() throws SQLException {
+        String cancelQuery = String.format("DELETE FROM Booking WHERE booking_id=%d", getBookingID());
+
+        Database db = new Database("in2033t01_a", "CtYS1azKU-8");
+
+        db.justExecute(cancelQuery);
+
+        db.close();
+    }
+
     public int getBookingID() {
         return BookingID;
     }

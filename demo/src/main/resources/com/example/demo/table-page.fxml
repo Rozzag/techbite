@@ -2,12 +2,15 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="stackbutton.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.TablePageController">
    <children>
@@ -28,14 +31,20 @@
         </rowConstraints>
          <children>
 
-            <TextField fx:id="nameField" prefHeight="25.0" prefWidth="50.0" promptText="Name" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <TextField fx:id="phoneNumberField" prefHeight="25.0" prefWidth="133.0" promptText="Phone Number" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <TextField fx:id="nameField" onAction="#fullFormName" prefHeight="25.0" prefWidth="50.0" promptText="Name" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <TextField fx:id="phoneNumberField" onAction="#fullFormNumber" prefHeight="25.0" prefWidth="133.0" promptText="Phone Number" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <TextArea fx:id="additionalInfoField" prefHeight="141.0" prefWidth="163.0" promptText="Additional Information" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-            <Button fx:id="allocateButton" mnemonicParsing="false" prefHeight="37.0" prefWidth="88.0" styleClass="background" stylesheets="@submitbutton.css" text="Allocate" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
+            <Button fx:id="allocateButton" mnemonicParsing="false" onAction="#allocationButton" prefHeight="37.0" prefWidth="88.0" styleClass="background" stylesheets="@submitbutton.css" text="Allocate" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
             <ComboBox fx:id="guestsField" onAction="#checkGuests" prefWidth="150.0" promptText="Guests" GridPane.rowIndex="2" />
             <ComboBox fx:id="initialTableField" onAction="#checkInitial" prefWidth="150.0" promptText="Initial Table" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="TOP" />
             <ComboBox fx:id="secondTableField" onAction="#checkSecond" prefWidth="150.0" promptText="Second Table" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <ComboBox fx:id="thirdTableField" onAction="#checkThird" prefWidth="150.0" promptText="Third Table" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+            <Label fx:id="allocateSuccess" textFill="#62ff07" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <RadioButton fx:id="wheelChair" mnemonicParsing="false" onAction="#needWheelChair" text="WheelChair" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
          </children>
       </GridPane>
    </children>

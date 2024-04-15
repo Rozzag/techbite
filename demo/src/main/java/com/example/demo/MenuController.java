@@ -58,9 +58,11 @@ public class MenuController implements Initializable {
         double cost = 0;
         for(Order o: orders){
             HBox row = new HBox();
+            // shows the dishname for the selected dish
             Label rowLabel = new Label(o.getD().getName());
             row.getChildren().add(rowLabel);
 
+            // allows the user to remove a dish from the order if they do not desire it anymore
             Button removeButton = new Button("REMOVE");
             removeButton.setOnAction(event -> {
                 orders.remove(o);
@@ -69,6 +71,7 @@ public class MenuController implements Initializable {
 
             row.getChildren().add(removeButton);
 
+            // adds the prices of the dishes selected to get the total price of the order
             cost += o.getD().getPrice();
 
             summary.getChildren().add(row);
@@ -86,6 +89,7 @@ public class MenuController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
+            // Displays the menu
             Menu menu = new Menu();
             String[] items = menu.getNames().toArray(new String[0]);
             menuItems.getItems().addAll(items);
@@ -109,6 +113,7 @@ public class MenuController implements Initializable {
                             // Radio buttons with ToggleGroup
                             ToggleGroup group = new ToggleGroup();
 
+                            // allows customer to control the proportions of the ingredients in dish
                             RadioButton rb1 = new RadioButton("None");
                             RadioButton rb2 = new RadioButton("Regular");
                             RadioButton rb3 = new RadioButton("Extra");
@@ -141,7 +146,7 @@ public class MenuController implements Initializable {
         }
 
         ObservableList<Integer> tables = FXCollections.observableArrayList();
-
+        // only up to table number 15
         for(int i = 1; i <= 15; i++){
             tables.add(i);
         }

@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+// controls the functionality for the table page which shows the table layout as wells
+// as the form for handling walk-in bookings
 public class TablePageController {
 
     TableController tableController;
@@ -50,7 +52,7 @@ public class TablePageController {
     @FXML
     private TextField phoneNumberField;
 
-    private List<String> tables = new LinkedList<>();
+    private List<Integer> tables = new LinkedList<>();
 
     public void setTableController(TableController tableController) {
         this.tableController = tableController;
@@ -60,12 +62,14 @@ public class TablePageController {
         return guestsField.getValue();
     }
 
-    public List<String> returnTables() {
+    public List<Integer> returnTables() {
         return tables;
     }
 
 
 
+    // initializes the buttons and combo boxes to disabled if necessary.
+    // also clears the user input so that the user doesn't submit the previous input
     public void initialize() {
         // disable the allocate button
         allocateButton.setDisable(true);
@@ -88,6 +92,8 @@ public class TablePageController {
 
 }
 
+    // the button sends the information to the database and also sends the notification
+    // to the actual page to reset the layout and assign the table as booked
      public void allocationButton() throws SQLException {
 
         allocateSuccess.setText("Customer has been seated!");
@@ -113,18 +119,23 @@ public class TablePageController {
 
          List<Integer> tableIds = new LinkedList<>();
              tableIds.add(Integer.valueOf(initialTableField.getValue()));
-             tables.add(initialTableField.getValue());
+             tables.add(Integer.valueOf(initialTableField.getValue()));
          if (guests > 2) {
              tableIds.add(Integer.valueOf(secondTableField.getValue()));
-             tables.add(secondTableField.getValue());
+             tables.add(Integer.valueOf(secondTableField.getValue()));
          }
          if (guests > 4) {
              tableIds.add(Integer.valueOf(thirdTableField.getValue()));
-             tables.add(thirdTableField.getValue());
+             tables.add(Integer.valueOf(thirdTableField.getValue()));
          }
 
-         Booking.addBooking(name, phoneNumber, formattedDateTime,guests,additionalInfo, wheelChairNeeded);
+         if (additionalInfoField.getText().isEmpty()) {
+             additionalInfo = "";
+         }
+
+         Booking.addBooking(name, phoneNumber, formattedDateTime,guests,additionalInfo, wheelChairNeeded, tables);
          tableController.assignTableAvailability();
+         System.out.println("assign the table availability again");
 
          nameField.clear();
          phoneNumberField.clear();
@@ -139,6 +150,8 @@ public class TablePageController {
 
 
 
+     // the method checks when the user inputted a value for the number of guests
+    // to then handle whether the disabled combo boxes are enabled or not
     public void checkGuests() {
         // get the number of guests first
         int numGuests = Integer.parseInt(guestsField.getValue());
@@ -174,6 +187,9 @@ public class TablePageController {
             }
     }
 
+    // this checks if the second combo box is enabled or not and also ensures that the
+    // options for the second one doesn't overlap with the database and the option for
+    // the first inputted box
     public void checkInitial(ActionEvent actionEvent) {
         // get the tables for the initial field and the guest field
         int numGuests = Integer.parseInt(guestsField.getValue());
@@ -217,6 +233,8 @@ public class TablePageController {
             buttonEnabled();
         }
     }
+
+    // does the same functionality but for the third combo box.
     public void checkSecond(ActionEvent actionEvent) {
 
         // for the second do the same thing but check that the number of guests is above 4
@@ -261,16 +279,21 @@ public class TablePageController {
         }
     }
 
+    // after the third combo box has been filled in, the button is enabled to allow
+    // the user to submit the information
     public void checkThird(ActionEvent actionEvent) {
         buttonEnabled();
      }
 
+     // checks with all the components if the button should be enabled or not
      public void buttonEnabled() {
          boolean disable = nameField.getText().isEmpty() || nameField.getText().trim().isEmpty()
                  || phoneNumberField.getText().isEmpty() || phoneNumberField.getText().trim().isEmpty();
          allocateButton.setDisable(disable);
      }
 
+     // from the perspective of the text field for the name, it checks whether the button
+    // can be enabled
      public void fullFormName() {
         // check if the other forms are filled in
          boolean disable = false;
@@ -294,6 +317,7 @@ public class TablePageController {
          allocateButton.setDisable(disable);
      }
 
+     // same feature as the above method but for the phone number field
      public void fullFormNumber() {
          // check if the other forms are filled in
          boolean disable = false;

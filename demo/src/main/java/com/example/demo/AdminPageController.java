@@ -61,6 +61,7 @@ public class AdminPageController implements Initializable {
 
     @FXML
     private void handleDelButton() throws SQLException {
+        // deletes the table row selected by the user
         staff.remove(selectedStaff);
         selectedStaff.delUser();
 
@@ -70,12 +71,14 @@ public class AdminPageController implements Initializable {
 
     @FXML
     private void handleChangePass() throws SQLException {
+        // Admin updates the password for the selected staff member
         selectedStaff.updatePassword(selectedStaff.getStaffID(), newPassText.getText());
         newPassText.clear();
     }
 
     @FXML
     private void handleChangeRole() throws SQLException {
+        // Admin changes the role for the selected staff member
         selectedStaff.updateRole(selectedStaff.getStaffID(), roleDrop.getValue());
         selectedStaff.setRole(roleDrop.getValue());
 
@@ -86,6 +89,7 @@ public class AdminPageController implements Initializable {
 
     @FXML
     private void addNewMemberButton() throws SQLException {
+        // Adds a new staff member to the SQL table and to the tableview when all fields have been filled
         if (!newMName.getText().isEmpty() && !newMUsername.getText().isEmpty() && !newMPass.getText().isEmpty() && newMRoleDrop.getValue() != null){
             staffList.add(Staff.addMember(newMName.getText(), newMUsername.getText(), newMPass.getText(), newMRoleDrop.getValue()));
 
@@ -99,14 +103,17 @@ public class AdminPageController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
+            // Gets the list of all staff members in the SQL table
             staffList = Staff.getAllStaff();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
+        // shows the table with all staff members
         doTable();
     }
 
+    // Shows every staff member in a table + their role
     private void doTable(){
         staff = FXCollections.observableArrayList();
 

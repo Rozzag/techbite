@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
+// this controller is designated for the page allocated for waiters as they have
+// lower persmissions than admin and so load fewer pages
 public class WaiterPageController {
     @FXML
     private Button dashboard;
@@ -31,12 +33,12 @@ public class WaiterPageController {
 
     private Button previousSelectedButton = null;
 
-    // normal button
+    // normal button layout on the dashboard
     public void highlightedButton(Button button) {
         button.setStyle("-fx-background-color: #D9D9D9; -fx-text-fill: #2B3336;");
     }
 
-    // highlighted button
+    // highlighted button on the dashboard
     public void normalButton(Button button) {
         button.setStyle("-fx-background-color: #2B3336; -fx-text-fill: #D9D9D9;");
     }
@@ -58,6 +60,7 @@ public class WaiterPageController {
 
 
 
+    // changes to the dashboard fxml page if the dashboard button on the panel is clicked
     public void dashboardPage(MouseEvent mouseEvent) throws IOException {
         // the previous button will revert to its normal colour
         if (this.previousSelectedButton != null) {
@@ -72,6 +75,7 @@ public class WaiterPageController {
         borderPane.setCenter(dashboard);
     }
 
+    // changes to the tables fxml page if the tables button on the panel is clicked
     public void tablesPage(MouseEvent mouseEvent) throws IOException {
         if (this.previousSelectedButton != null) {
             normalButton(this.previousSelectedButton);
@@ -86,6 +90,7 @@ public class WaiterPageController {
         borderPane.setCenter(tablesPage);
     }
 
+    // changes to the menus fxml page if the menus button on the panel is clicked
     public void menusPage(MouseEvent mouseEvent) throws IOException {
         if (this.previousSelectedButton != null) {
             normalButton(this.previousSelectedButton);
@@ -98,7 +103,7 @@ public class WaiterPageController {
     }
 
 
-
+    // ensures that the logout button just sets a new scene on the stage
     public void logout(MouseEvent mouseEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("login.fxml"));
         Stage stage = LancasterPage.stage;

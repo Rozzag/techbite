@@ -78,6 +78,7 @@ public class DashBoardController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedDate = today.format(formatter);
         date = LocalDate.parse(formattedDate, formatter);
+        // Sets todays date in the datepicker
         datePicker.setValue(date);
 
         // for each selected date we will extract the time and the total number of guests during that period
@@ -152,6 +153,7 @@ public class DashBoardController {
             return;
         }
 
+        // displays error message to the user
         if (date == null) {
             errorMessage.setText("Date input is empty");
             PauseTransition disappearingMessage = new PauseTransition(Duration.seconds(2));
@@ -160,9 +162,7 @@ public class DashBoardController {
             return;
         }
 
-
-
-
+        // creates connection with db
         Database database = new Database();
 
         ArrayList<ArrayList<String>> query4revenue = database.selectValues(String.format(
@@ -173,6 +173,7 @@ public class DashBoardController {
                         "DATE(Booking.booking_date_time) = '%s'".formatted(date)));
 
         if (query4revenue.isEmpty()) {
+            // if query does not return results
             errorMessage.setText("There are no bookings for: " + date.toString());
             PauseTransition disappearingMessage = new PauseTransition(Duration.seconds(2));
             disappearingMessage.setOnFinished(event -> errorMessage.setText(""));
@@ -196,17 +197,12 @@ public class DashBoardController {
             numBookings.setText("Bookings today: " + query4bookings.get(0).get(0));
         }
 
-
-
-
-
         String datePicker = "SELECT * FROM Booking WHERE DATE(booking_date_time) = '%s' ORDER BY DATE(booking_date_time);".formatted(date);
 
         ArrayList<ArrayList<String>> values = database.selectValues(datePicker);
 
-
-
             if (!values.isEmpty()) {
+                // displays total number of bookings for a given date
                 for (ArrayList<String> rows : values) {
                     int bookingId = Integer.parseInt(rows.get(0));
                     String phnNumber = rows.get(1);
@@ -224,10 +220,7 @@ public class DashBoardController {
                 disappearingMessage.setOnFinished(event -> errorMessage.setText(""));
                 disappearingMessage.play();
             }
-
-
         database.close();
-
     }
 
     public void addBookingForm() throws SQLException {
@@ -257,22 +250,22 @@ public class DashBoardController {
             xyValues.getData().add(new XYChart.Data<>(time, guests));
         }
 
+        // Displays line chart
         lineChart.getData().add(xyValues);
 
         database.close();
-
-
-
     }
 
     @FXML
     public void swipeRight() throws SQLException {
+        // To display next booking info
         index++;
         addBookingForm();
     }
 
     @FXML
     public void swipeLeft() throws SQLException {
+        // To display previous booking info
         if (index == 0) {
             index = bookings.size()-1;
         }

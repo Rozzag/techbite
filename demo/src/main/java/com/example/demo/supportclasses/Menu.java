@@ -15,7 +15,7 @@ public class Menu {
     private int menuLength;
     private Connection conn;
 
-    // Getting all menu items from db
+    // Getting all menu items from database to then add to containers for the menu page arraylist
     public Menu() throws SQLException {
         itemIDs = new ArrayList<>();
         names = new ArrayList<>();

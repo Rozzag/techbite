@@ -11,6 +11,7 @@ public class Staff {
     private String name;
     private String role;
 
+    // staff class gets the cstaff id and retrieves the name and role fom the database
     public Staff(int staffID) throws SQLException {
         Database db = new Database();
 
@@ -40,6 +41,8 @@ public class Staff {
         this.role = role;
     }
 
+    // the admin user can update the role of a staff member
+    // through the UPDATE method
     public void updateRole(int id, String newRole) throws SQLException {
         Database db = new Database("in2033t01_a", "CtYS1azKU-8");
 
@@ -50,6 +53,8 @@ public class Staff {
         db.close();
     }
 
+    // the same update strategy is used except the column for the staff member's
+    // password is changed
     public void updatePassword(int id, String newPassword) throws SQLException {
         Database db = new Database("in2033t01_a", "CtYS1azKU-8");
 
@@ -60,6 +65,7 @@ public class Staff {
         db.close();
     }
 
+    // user is not deleted but their status is changed in the database to 'dismissed
     public void delUser() throws SQLException {
         Database db = new Database("in2033t01_a", "CtYS1azKU-8");
 

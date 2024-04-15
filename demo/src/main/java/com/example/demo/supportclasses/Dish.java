@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class Dish {
     private int itemID;
     private String name;
@@ -18,6 +19,8 @@ public class Dish {
 
     public Dish(){this.db = new Database();}
 
+
+    // gets the dish information to the dish for a specific name
     public void getDishByName(String name) throws SQLException {
         ArrayList<ArrayList<String>> dishValues = this.db.selectValues(String.format("SELECT * FROM MenuItem WHERE name='%s'", name));
 
@@ -31,6 +34,7 @@ public class Dish {
         }
     }
 
+    // sets the attributes of the dish for a given dish id
     public void getDishById(int id) throws SQLException {
         ArrayList<ArrayList<String>> dishValues = this.db.selectValues(String.format("SELECT * FROM MenuItem WHERE item_id=%d", id));
 
@@ -70,6 +74,7 @@ public class Dish {
         return name;
     }
 
+    // gets all the ingredients from the dish
     public String[] getIngredients() {
         String input = ingredients.replace("and", ",");
         String[] parts = input.split(", ");

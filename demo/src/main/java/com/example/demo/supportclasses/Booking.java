@@ -1,6 +1,7 @@
 package com.example.demo.supportclasses;
 
 import com.example.demo.connectivity.Database;
+import javafx.scene.chart.XYChart;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class Booking {
     private String name;
     private String customerPhoneNum;
 
+    // creates a booking object to allow for accessing booking information
     public Booking(int bookingId, String customerPhoneNum, String bookingDateTime, int numCustomers, int wheelChair, String requirements, String name) {
         this.BookingID = bookingId;
         this.customerPhoneNum = customerPhoneNum;
@@ -34,9 +36,22 @@ public class Booking {
         this.specialRequest = requirements;
     }
 
+    // adds the tables for a specific booking to the Grouping table
+    public static void addGrouping(int bookingID, List<Integer> tables) throws SQLException {
+        // add to the Grouping table the tables for a specific id
+        if (!tables.isEmpty()) {
+            Database db = new Database();
+            for (int table : tables) {
+                String query = "INSERT INTO Grouping VALUES (%d,%d,'Unavailable');".formatted(bookingID,table);
+            }
+            db.close();
+        }
+
+    }
+
 
     // Add bookings especially for walk-in customers
-    public static void addBooking(String name, String customerNum, String dt, int numOfDiners, String specialRequest, int wheelchair) throws SQLException {
+    public static void addBooking(String name, String customerNum, String dt, int numOfDiners, String specialRequest, int wheelchair, List<Integer> tables) throws SQLException {
         Database c = new Database();
 
         int bookingId = Integer.parseInt(new Database().selectValues("SELECT MAX(booking_id) FROM Booking").get(0).get(0)) + 1;
@@ -47,11 +62,12 @@ public class Booking {
 
         try {
             ArrayList<ArrayList<String>> checkCust = c.selectValues(checkExistingCust);
-            // Create new customer record if they dont exist already
+            // Create new customer record if they don't exist already
             if (checkCust.isEmpty()){
                 c.insertValues(customerQuery);
             }
             c.insertValues(bookingQuery);
+            addGrouping(bookingId, tables);
         } catch (SQLException e) {
             System.err.println("There was an error inserting values into the booking table:" + e.getMessage());
         }
@@ -82,6 +98,7 @@ public class Booking {
         return bookings;
     }
 
+    // deletes the row for a booking id
     public void cancelBooking() throws SQLException {
         String cancelQuery = String.format("DELETE FROM Booking WHERE booking_id=%d", getBookingID());
 

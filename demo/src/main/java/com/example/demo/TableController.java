@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+// this controller handles the tables displayed on the table page to assign tables as either
+// booked or not
 public class TableController {
 
     @FXML
@@ -114,11 +116,14 @@ public class TableController {
 
     private TablePageController tablePageController;
 
+    // initialises the table layout by showing the tables which are available for the current time
     public void initialize() throws SQLException {
      assignTableAvailability();
 
     }
 
+    // all tables are assigned green as available except if the table id is found in the
+    // Booking schema. If so, the table is assigned red as booked
     public void assignTableAvailability() throws SQLException {
         rectangles.add(table9);
         rectangles.add(table8);
@@ -181,6 +186,9 @@ public class TableController {
 
     }
 
+
+    // this method coordinates with the other controller in order to sync the
+    // button with the updating of the availability of the table
     public void setTablePageController(TablePageController tablePageController) {
         this.tablePageController = tablePageController;
     }

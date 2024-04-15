@@ -66,7 +66,7 @@ public class AdminViewController {
     }
 
 
-
+    // Loads dashboard page when dashboard button is clicked
     public void dashboardPage(MouseEvent mouseEvent) throws IOException {
         // the previous button will revert to its normal colour
         if (this.previousSelectedButton != null) {
@@ -84,6 +84,7 @@ public class AdminViewController {
         }
     }
 
+    // Loads tables page when tables button is clicked
     public void tablesPage(MouseEvent mouseEvent) throws IOException {
         if (this.previousSelectedButton != null) {
             normalButton(this.previousSelectedButton);
@@ -93,16 +94,6 @@ public class AdminViewController {
         this.previousSelectedButton = table;
 
         // add the tables page to the centre of the border pane
-//        Node tablesPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("table-page.fxml")));
-//
-//        borderPane.setCenter(tablesPage);
-//
-//
-//
-//        Node tables = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("table.fxml")));
-//
-//        borderPane.setRight(tables);
-
         FXMLLoader loaderTablePage = new FXMLLoader(Objects.requireNonNull(getClass().getResource("table-page.fxml")));
         Node tablesPage = loaderTablePage.load();
         TablePageController tablePageController = loaderTablePage.getController();
@@ -120,6 +111,7 @@ public class AdminViewController {
         borderPane.setRight(tables);
     }
 
+    // Loads menu page when menu button is clicked
     public void menusPage(MouseEvent mouseEvent) throws IOException {
         if (this.previousSelectedButton != null) {
             normalButton(this.previousSelectedButton);
@@ -135,6 +127,7 @@ public class AdminViewController {
         }
     }
 
+    // Loads admin page when admin button is clicked
     public void adminPage() throws IOException {
         if (this.previousSelectedButton != null) {
             normalButton(this.previousSelectedButton);
@@ -150,6 +143,7 @@ public class AdminViewController {
         }
     }
 
+    // Loads booking page when booking button is clicked
     public void bookingPage(MouseEvent mouseEvent) throws IOException {
         if (this.previousSelectedButton != null) {
             normalButton(this.previousSelectedButton);
@@ -165,7 +159,7 @@ public class AdminViewController {
         }
     }
 
-
+    // logs user out when they click the logout button
     public void logout(MouseEvent mouseEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("login.fxml"));
         Stage stage = LancasterPage.stage;

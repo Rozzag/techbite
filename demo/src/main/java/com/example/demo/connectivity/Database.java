@@ -26,6 +26,7 @@ public class Database {
         }
     }
 
+    // allows for a user to access another user to the schema for admin roles, for example
     public Database (String user, String pass) {
         try {
             connection = DriverManager.getConnection(CONN_STRING, user, pass);
@@ -86,6 +87,7 @@ public class Database {
 
     }
 
+    // executes the query which is inputted
     public boolean justExecute(String query) throws SQLException {
         PreparedStatement pstm = connection.prepareStatement(query);
 
@@ -97,6 +99,8 @@ public class Database {
         return false;
     }
 
+
+    // returns whether an insertion has been successful or not
     public boolean insertValues(String query) throws SQLException {
 
         PreparedStatement pstm = connection.prepareStatement(query);
@@ -117,6 +121,7 @@ public class Database {
     }
 
 
+    // creates a 2d table of the result of a query
     public ArrayList<ArrayList<String>> selectValues(String query) throws SQLException {
         PreparedStatement pstm = connection.prepareStatement(query);
 
@@ -160,6 +165,7 @@ public class Database {
         return updatedTable > 0;
     }
 
+    // closes the connection of the database
     public boolean close() throws SQLException {
         if (!connection.isClosed()) {
             connection.close();

@@ -12,34 +12,39 @@
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<SplitPane dividerPositions="0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.BookingController">
+<SplitPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.BookingController">
   <items>
-    <AnchorPane fx:id="tablesLayout" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-    <AnchorPane fx:id="bookingForm" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+    <AnchorPane fx:id="tablesLayout" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>
-            <Label layoutX="107.0" layoutY="14.0" text="Booking form:" />
-            <TextField fx:id="bookingName" layoutX="108.0" layoutY="32.0" prefHeight="26.0" prefWidth="168.0" promptText="Full name" />
-            <TextField fx:id="bookingPhnNumber" layoutX="375.0" layoutY="32.0" prefHeight="26.0" prefWidth="168.0" promptText="Phone number" />
-            <DatePicker fx:id="bookingDate" layoutX="108.0" layoutY="71.0" prefHeight="26.0" prefWidth="168.0" promptText="Date" />
-            <ComboBox fx:id="bookingTime" layoutX="375.0" layoutY="71.0" prefHeight="26.0" prefWidth="168.0" promptText="Time" />
-            <TextArea fx:id="bookingAdditionalInfo" layoutX="105.0" layoutY="148.0" prefHeight="42.0" prefWidth="435.0" promptText="Additional info..." />
-            <Button fx:id="submitButton" layoutX="481.0" layoutY="197.0" mnemonicParsing="false" onAction="#handleSubmitButton" text="SUBMIT" />
-            <ToggleButton fx:id="bookingWheelchair" layoutX="110.0" layoutY="197.0" mnemonicParsing="false" onAction="#handleWheelToggle" text="Wheelchair" />
-            <ComboBox fx:id="bookingDiners" layoutX="107.0" layoutY="111.0" prefWidth="150.0" promptText="Number of diners" />
-            <Label fx:id="errorLabel" layoutX="222.0" layoutY="318.0" textFill="RED" />
-            <TableView fx:id="bookingTables" layoutX="93.0" layoutY="235.0" prefHeight="162.0" prefWidth="449.0">
-              <columns>
-                  <TableColumn fx:id="bookingIDs" prefWidth="59.99993818998337" text="Order IDs" />
-                <TableColumn fx:id="bookingNames" prefWidth="133.60004043579102" text="Name" />
-                  <TableColumn fx:id="bookingPhones" prefWidth="97.5999755859375" text="Phone number" />
-                  <TableColumn fx:id="bookingTimes" prefWidth="80.00004577636719" text="Time" />
-                  <TableColumn fx:id="bookingGuests" prefWidth="75.0" text="Guests" />
-              </columns>
-            </TableView>
-            <DatePicker fx:id="searchBookingDate" layoutX="93.0" layoutY="414.0" prefHeight="26.0" prefWidth="168.0" />
-            <Button fx:id="findBookingButton" layoutX="392.0" layoutY="414.0" mnemonicParsing="false" onAction="#handleFindBookingButton" prefHeight="26.0" prefWidth="150.0" text="FIND BOOKINGS" />
-            <Button fx:id="cancelBookingButton" layoutX="392.0" layoutY="485.0" mnemonicParsing="false" onAction="#handleCancelBookingButton" prefHeight="26.0" prefWidth="150.0" text="CANCEL BOOKING" />
-         </children>
-      </AnchorPane>
+          <AnchorPane fx:id="bookingForm" layoutX="271.0" layoutY="-14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Label layoutX="107.0" layoutY="14.0" text="Booking form:" />
+                  <TextField fx:id="bookingName" layoutX="108.0" layoutY="32.0" prefHeight="26.0" prefWidth="168.0" promptText="Full name" />
+                  <TextField fx:id="bookingPhnNumber" layoutX="375.0" layoutY="32.0" prefHeight="26.0" prefWidth="168.0" promptText="Phone number" />
+                  <DatePicker fx:id="bookingDate" layoutX="108.0" layoutY="71.0" prefHeight="26.0" prefWidth="168.0" promptText="Date" />
+                  <ComboBox fx:id="bookingTime" layoutX="375.0" layoutY="71.0" prefHeight="26.0" prefWidth="168.0" promptText="Time" />
+                  <TextArea fx:id="bookingAdditionalInfo" layoutX="105.0" layoutY="148.0" prefHeight="42.0" prefWidth="435.0" promptText="Additional info..." />
+                  <Button fx:id="submitButton" layoutX="481.0" layoutY="197.0" mnemonicParsing="false" onAction="#handleSubmitButton" text="SUBMIT" />
+                  <ToggleButton fx:id="bookingWheelchair" layoutX="110.0" layoutY="197.0" mnemonicParsing="false" onAction="#handleWheelToggle" text="Wheelchair" />
+                  <ComboBox fx:id="bookingDiners" layoutX="107.0" layoutY="111.0" onAction="#handleDiners" prefWidth="150.0" promptText="Number of diners" />
+                  <Label fx:id="errorLabel" layoutX="222.0" layoutY="318.0" textFill="RED" />
+                  <TableView fx:id="bookingTables" layoutX="93.0" layoutY="235.0" prefHeight="162.0" prefWidth="449.0">
+                    <columns>
+                        <TableColumn fx:id="bookingIDs" prefWidth="59.99993818998337" text="Order IDs" />
+                      <TableColumn fx:id="bookingNames" prefWidth="133.60004043579102" text="Name" />
+                        <TableColumn fx:id="bookingPhones" prefWidth="97.5999755859375" text="Phone number" />
+                        <TableColumn fx:id="bookingTimes" prefWidth="80.00004577636719" text="Time" />
+                        <TableColumn fx:id="bookingGuests" prefWidth="75.0" text="Guests" />
+                    </columns>
+                  </TableView>
+                  <DatePicker fx:id="searchBookingDate" layoutX="93.0" layoutY="414.0" prefHeight="26.0" prefWidth="168.0" />
+                  <Button fx:id="findBookingButton" layoutX="392.0" layoutY="414.0" mnemonicParsing="false" onAction="#handleFindBookingButton" prefHeight="26.0" prefWidth="150.0" text="FIND BOOKINGS" />
+                  <Button fx:id="cancelBookingButton" layoutX="392.0" layoutY="485.0" mnemonicParsing="false" onAction="#handleCancelBookingButton" prefHeight="26.0" prefWidth="150.0" text="CANCEL BOOKING" />
+               </children>
+            </AnchorPane>
+            <ComboBox fx:id="table1" layoutX="542.0" layoutY="96.0" onAction="#handleTable1" prefHeight="25.0" prefWidth="85.0" promptText="Table1" />
+            <ComboBox fx:id="table2" layoutX="639.0" layoutY="96.0" onAction="#handleTable2" prefHeight="25.0" prefWidth="85.0" promptText="Table2" />
+            <ComboBox fx:id="table3" layoutX="729.0" layoutY="96.0" onAction="#handleTable3" prefHeight="25.0" prefWidth="85.0" promptText="Table3" />
+         </children></AnchorPane>
   </items>
 </SplitPane>

@@ -70,6 +70,7 @@ public class LoginController {
 
             String role = staff.getRole();
 
+            // Displays different pages depending on the role
             if (role.equals("Maitre d")) {
                 FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("admin-menu.fxml"));
                 Stage stage = LancasterPage.stage;
@@ -91,12 +92,8 @@ public class LoginController {
 
         }
 
-
-
-
-
-
         } else {
+            // if credentials do not match, displays error to user
             errorLabel.setText("Username or password is incorrect");
             PauseTransition disappearingMessage = new PauseTransition(Duration.seconds(1));
             disappearingMessage.setOnFinished(event -> errorLabel.setText(""));

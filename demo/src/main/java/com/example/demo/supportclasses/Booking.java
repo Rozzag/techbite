@@ -5,6 +5,7 @@ import com.example.demo.connectivity.Database;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +22,7 @@ public class Booking {
     private String customerPhoneNum;
 
     private String custId;
+
 
     public Booking(int bookingID, String customerID, String dt, int numOfDiners, int wheelchair, String specialRequest, String name, String customerPhoneNum) {
         BookingID = bookingID;
@@ -42,14 +44,43 @@ public class Booking {
         this.specialRequest = requirements;
     }
 
+    public static void addGrouping(int bookingID, List<Integer> tableIds) throws SQLException {
+
+
+        for (int id : tableIds) {
+            String query = "INSERT INTO Grouping VALUES(%d,%d,'Unavailable');".formatted(bookingID, id);
+            Database db = new Database();
+            db.justExecute(query);
+            db.close();
+        }
+    }
+
+
+    public static LocalTime roundDownToNearestHalfHour(LocalTime time) {
+        int minute = time.getMinute();
+        int minuteToSubtract = minute % 30; // Get the minutes past the nearest half hour
+        return time.minusMinutes(minuteToSubtract); // Subtract those minutes to round down
+    }
+
+    public static LocalDateTime parseAndRoundDateTime(String dateTimeStr) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr, formatter); // Parse the datetime string
+        LocalTime roundedTime = roundDownToNearestHalfHour(dateTime.toLocalTime()); // Round down the time
+        return dateTime.withHour(roundedTime.getHour()).withMinute(roundedTime.getMinute()).withSecond(0); // Return new LocalDateTime
+    }
+
+
+
 
     // Add bookings especially for walk-in customers
-    public static void addBooking(String name, String customerNum, String dt, int numOfDiners, String specialRequest, int wheelchair) throws SQLException {
+    public static void addBooking(String name, String customerNum, String dt, int numOfDiners, String specialRequest, int wheelchair, List<Integer> tableId) throws SQLException {
         Database c = new Database();
 
         int bookingId = Integer.parseInt(new Database().selectValues("SELECT MAX(booking_id) FROM Booking").get(0).get(0)) + 1;
 
-        String bookingQuery = "INSERT INTO Booking VALUES (%d, '%s', '%s', %d, %d, '%s');".formatted(bookingId, customerNum, dt, numOfDiners, wheelchair, specialRequest);
+       LocalDateTime parsedDate = parseAndRoundDateTime(dt);
+
+        String bookingQuery = "INSERT INTO Booking VALUES (%d, '%s', '%s', %d, %d, '%s');".formatted(bookingId, customerNum, parsedDate, numOfDiners, wheelchair, specialRequest);
         String customerQuery = "INSERT INTO Customer VALUES ('%s', '%s')".formatted(name, customerNum);
         String checkExistingCust = "SELECT phone_number FROM Customer WHERE phone_number='%s'".formatted(customerNum);
 
@@ -60,6 +91,7 @@ public class Booking {
                 c.insertValues(customerQuery);
             }
             c.insertValues(bookingQuery);
+            addGrouping(bookingId, tableId);
         } catch (SQLException e) {
             System.err.println("There was an error inserting values into the booking table:" + e.getMessage());
         }
@@ -90,6 +122,8 @@ public class Booking {
             Booking booking = new Booking(bookingId, custId, bookingDateTime, numCustomers, wheelChair, requirements);
             bookings.add(booking);
         }
+
+
         return bookings;
     }
 

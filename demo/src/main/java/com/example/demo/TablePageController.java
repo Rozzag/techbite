@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.connectivity.Database;
+import com.example.demo.supportclasses.Booking;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -9,10 +10,15 @@ import javafx.scene.control.*;
 import javafx.util.Duration;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TablePageController {
+
+    TableController tableController;
 
     @FXML
     private RadioButton wheelChair;
@@ -44,6 +50,22 @@ public class TablePageController {
     @FXML
     private TextField phoneNumberField;
 
+    private List<String> tables = new LinkedList<>();
+
+    public void setTableController(TableController tableController) {
+        this.tableController = tableController;
+    }
+
+    public String getGuestNumber() {
+        return guestsField.getValue();
+    }
+
+    public List<String> returnTables() {
+        return tables;
+    }
+
+
+
     public void initialize() {
         // disable the allocate button
         allocateButton.setDisable(true);
@@ -66,7 +88,7 @@ public class TablePageController {
 
 }
 
-     public void allocationButton() {
+     public void allocationButton() throws SQLException {
 
         allocateSuccess.setText("Customer has been seated!");
          PauseTransition disappearingMessage = new PauseTransition(Duration.seconds(1));
@@ -85,8 +107,24 @@ public class TablePageController {
              wheelChairNeeded = 1;
          }
 
+         LocalDateTime now = LocalDateTime.now();
+         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+         String formattedDateTime = now.format(formatter);
 
-         String query = "INSERT INTO Booking VALUES('%s',TIMESTAMP(CURRENT_DATE,SEC_TO_TIME(CURRENT_TIME))/1800)*1800),%s,%s,'%s');".formatted(phoneNumber, guests,wheelChairNeeded,additionalInfo);
+         List<Integer> tableIds = new LinkedList<>();
+             tableIds.add(Integer.valueOf(initialTableField.getValue()));
+             tables.add(initialTableField.getValue());
+         if (guests > 2) {
+             tableIds.add(Integer.valueOf(secondTableField.getValue()));
+             tables.add(secondTableField.getValue());
+         }
+         if (guests > 4) {
+             tableIds.add(Integer.valueOf(thirdTableField.getValue()));
+             tables.add(thirdTableField.getValue());
+         }
+
+         Booking.addBooking(name, phoneNumber, formattedDateTime,guests,additionalInfo, wheelChairNeeded, tableIds);
+         tableController.assignTableAvailability();
 
          nameField.clear();
          phoneNumberField.clear();
@@ -95,6 +133,8 @@ public class TablePageController {
          secondTableField.setValue(null);
          thirdTableField.setValue(null);
          additionalInfoField.clear();
+
+
      }
 
     public void checkGuests() {
@@ -107,7 +147,7 @@ public class TablePageController {
             try {
                 // we can only add the tables that are not booked
                 Database db = new Database();
-                String bookedTables = "select table_id from Orders as o join Booking as b on b.booking_id = o.booking_id WHERE CURRENT_TIMESTAMP between time(b.booking_date_time) and date_add(time(b.booking_date_time), INTERVAL 30 minute) and date(b.booking_date_time)=CURRENT_DATE;";
+                String bookedTables = "select table_id from Grouping as g join Booking as b on b.booking_id = g.booking_id WHERE CURRENT_TIMESTAMP between time(b.booking_date_time) and date_add(time(b.booking_date_time), INTERVAL 30 minute) and date(b.booking_date_time)=CURRENT_DATE;";
                 ArrayList<ArrayList<String>> returnedValues = db.selectValues(bookedTables);
 
                 // store the tables which haven't been booked
@@ -145,7 +185,7 @@ public class TablePageController {
             try {
                 // we can only add the tables that are not booked
                 Database db = new Database();
-                String bookedTables = "select table_id from Orders as o join Booking as b on b.booking_id = o.booking_id WHERE CURRENT_TIMESTAMP between time(b.booking_date_time) and date_add(time(b.booking_date_time), INTERVAL 30 minute) and date(b.booking_date_time)=CURRENT_DATE;";
+                String bookedTables = "select table_id from Grouping as g join Booking as b on b.booking_id = g.booking_id WHERE CURRENT_TIMESTAMP between time(b.booking_date_time) and date_add(time(b.booking_date_time), INTERVAL 30 minute) and date(b.booking_date_time)=CURRENT_DATE;";
                 ArrayList<ArrayList<String>> returnedValues = db.selectValues(bookedTables);
 
                 // store the tables which haven't been booked
@@ -190,7 +230,7 @@ public class TablePageController {
             try {
                 // we can only add the tables that are not booked
                 Database db = new Database();
-                String bookedTables = "select table_id from Orders as o join Booking as b on b.booking_id = o.booking_id WHERE CURRENT_TIMESTAMP between time(b.booking_date_time) and date_add(time(b.booking_date_time), INTERVAL 30 minute) and date(b.booking_date_time)=CURRENT_DATE;";
+                String bookedTables = "select table_id from Grouping as g join Booking as b on b.booking_id = g.booking_id WHERE CURRENT_TIMESTAMP between time(b.booking_date_time) and date_add(time(b.booking_date_time), INTERVAL 30 minute) and date(b.booking_date_time)=CURRENT_DATE;";
                 ArrayList<ArrayList<String>> returnedValues = db.selectValues(bookedTables);
 
                 // store the tables which haven't been booked

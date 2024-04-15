@@ -44,7 +44,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <RadioButton fx:id="wheelChair" mnemonicParsing="false" onAction="#needWheelChair" text="WheelChair" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+            <RadioButton fx:id="wheelChair" mnemonicParsing="false" text="WheelChair" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
          </children>
       </GridPane>
    </children>

@@ -93,13 +93,30 @@ public class AdminViewController {
         this.previousSelectedButton = table;
 
         // add the tables page to the centre of the border pane
-        Node tablesPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("table-page.fxml")));
+//        Node tablesPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("table-page.fxml")));
+//
+//        borderPane.setCenter(tablesPage);
+//
+//
+//
+//        Node tables = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("table.fxml")));
+//
+//        borderPane.setRight(tables);
+
+        FXMLLoader loaderTablePage = new FXMLLoader(Objects.requireNonNull(getClass().getResource("table-page.fxml")));
+        Node tablesPage = loaderTablePage.load();
+        TablePageController tablePageController = loaderTablePage.getController();
+
+        // Load Table and get its controller
+        FXMLLoader loaderTable = new FXMLLoader(Objects.requireNonNull(getClass().getResource("table.fxml")));
+        Node tables = loaderTable.load();
+        TableController tableController = loaderTable.getController();
+
+        // Now you can connect the controllers if needed
+        tablePageController.setTableController(tableController);
+        tableController.setTablePageController(tablePageController);
 
         borderPane.setCenter(tablesPage);
-
-
-        Node tables = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("table.fxml")));
-
         borderPane.setRight(tables);
     }
 

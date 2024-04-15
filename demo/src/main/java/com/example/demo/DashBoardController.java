@@ -209,12 +209,12 @@ public class DashBoardController {
             if (!values.isEmpty()) {
                 for (ArrayList<String> rows : values) {
                     int bookingId = Integer.parseInt(rows.get(0));
-                    String custId = rows.get(1);
+                    String phnNumber = rows.get(1);
                     String bookingDateTime = rows.get(2).split(" ")[1];
                     int numCustomers = Integer.parseInt(rows.get(3));
                     int wheelChair = Integer.parseInt(rows.get(4));
                     String requirements = rows.get(5);
-                    Booking booking = new Booking(bookingId, custId, bookingDateTime, numCustomers, wheelChair, requirements);
+                    Booking booking = new Booking(bookingId, phnNumber, bookingDateTime, numCustomers, wheelChair, requirements);
                     bookings.add(booking);
                 }
                 addBookingForm();

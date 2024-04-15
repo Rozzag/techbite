@@ -1,6 +1,9 @@
 package com.example.demo;
 
 import com.example.demo.supportclasses.Booking;
+import com.example.demo.supportclasses.Staff;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableListBase;
@@ -8,12 +11,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class BookingController implements Initializable {
@@ -48,7 +54,36 @@ public class BookingController implements Initializable {
     @FXML
     private Label errorLabel;
 
+    @FXML
+    private TableView<Booking> bookingTables;
+
+    @FXML
+    private TableColumn<Booking, Integer> bookingIDs;
+
+    @FXML
+    private TableColumn<Booking, String> bookingNames;
+
+    @FXML
+    private TableColumn<Booking, String> bookingPhones;
+
+    @FXML
+    private TableColumn<Booking, String> bookingTimes;
+
+    @FXML
+    private TableColumn<Booking, Integer> bookingGuests;
+
+    @FXML
+    private DatePicker searchBookingDate;
+
+    @FXML
+    private Button findBookingButton;
+
+    @FXML
+    private Button cancelBookingButton;
+
     private boolean wheel = false;
+    private ObservableList<Booking> bookings;
+
 
     @FXML
     void handleWheelToggle(ActionEvent event) {
@@ -109,5 +144,28 @@ public class BookingController implements Initializable {
             startTime = startTime.plusMinutes(30); // Add 30 minutes
         }
         bookingTime.setItems(times);
+
+        // If nothing entered, setting date to today
+        searchBookingDate.setValue(LocalDate.now());
+
+        try {
+            seeBookingTable();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private void seeBookingTable() throws SQLException {
+        bookings = FXCollections.observableArrayList(Booking.getBookings(searchBookingDate.getValue().toString()));
+
+        //writing rows
+        bookingIDs.setCellValueFactory(new PropertyValueFactory<Booking, Integer>("BookingID"));
+        bookingNames.setCellValueFactory(new PropertyValueFactory<Booking, String>("name"));
+        bookingPhones.setCellValueFactory(new PropertyValueFactory<Booking, String>("customerPhoneNum"));
+        bookingTimes.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDt().split(" ")[1]));
+        bookingGuests.setCellValueFactory(new PropertyValueFactory<Booking, Integer>("numOfDiners"));
+
+        bookingTables.setItems(bookings);
     }
 }

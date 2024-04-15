@@ -123,7 +123,7 @@ public class TablePageController {
              tables.add(thirdTableField.getValue());
          }
 
-         Booking.addBooking(name, phoneNumber, formattedDateTime,guests,additionalInfo, wheelChairNeeded);
+         Booking.addBooking(name, phoneNumber, formattedDateTime,guests,additionalInfo, wheelChairNeeded, tableIds);
          tableController.assignTableAvailability();
 
          nameField.clear();

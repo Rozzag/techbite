@@ -47,7 +47,7 @@ public class KitchenImplementation implements KitchenInterface {
 
     @Override
     public List<Integer> getOrderId() throws SQLException {
-            Connectivity connectivity = new Connectivity();
+        Connectivity connectivity = new Connectivity();
 
         LocalDate today = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

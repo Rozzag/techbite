@@ -20,9 +20,6 @@ public class Booking {
     private String name;
     private String customerPhoneNum;
 
-    public static int bookingId = 17;
-    public static int customerId = 17;
-
     private String custId;
 
     public Booking(int bookingID, String customerID, String dt, int numOfDiners, int wheelchair, String specialRequest, String name, String customerPhoneNum) {
@@ -47,18 +44,25 @@ public class Booking {
 
 
     // Add bookings especially for walk-in customers
-    public static void addBooking(String name, String customerNum, int numOfDiners, String specialRequest, int wheelchair) throws SQLException {
+    public static void addBooking(String name, String customerNum, String dt, int numOfDiners, String specialRequest, int wheelchair) throws SQLException {
         Database c = new Database();
 
-        String query = "INSERT INTO Booking VALUES (%d, %d, '%s', %d, %d, '%s');".formatted(bookingId, customerId, LocalDate.now(), numOfDiners, wheelchair, specialRequest);
+        int bookingId = Integer.parseInt(new Database().selectValues("SELECT MAX(booking_id) FROM Booking").get(0).get(0)) + 1;
+
+        String bookingQuery = "INSERT INTO Booking VALUES (%d, '%s', '%s', %d, %d, '%s');".formatted(bookingId, customerNum, dt, numOfDiners, wheelchair, specialRequest);
+        String customerQuery = "INSERT INTO Customer VALUES ('%s', '%s')".formatted(name, customerNum);
+        String checkExistingCust = "SELECT phone_number FROM Customer WHERE phone_number='%s'".formatted(customerNum);
 
         try {
-            boolean updateTable = c.insertValues(query);
+            ArrayList<ArrayList<String>> checkCust = c.selectValues(checkExistingCust);
+            // Create new customer record if they dont exist already
+            if (checkCust.isEmpty()){
+                c.insertValues(customerQuery);
+            }
+            c.insertValues(bookingQuery);
         } catch (SQLException e) {
             System.err.println("There was an error inserting values into the booking table:" + e.getMessage());
         }
-
-
     }
 
     // Get a list of bookings and then loop through the bookings to show the booking details

@@ -6,19 +6,14 @@ public class Customer {
     private int customerId;
     private boolean payCard;
     private String phoneNumber;
-    private int cardNumber;
-    private Date expiryDate;
 
 
     // staff member takes all the information from the customer when first registering to the restaurant
-    public Customer(String name, String phoneNumber, boolean payCard, int customerId,
-                    int cardNumber, Date expiryDate) {
+    public Customer(String name, String phoneNumber, boolean payCard, int customerId) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.payCard = payCard;
         this.cardNumber = cardNumber;
-        this.expiryDate = expiryDate;
-        this.customerId = customerId;
     }
 
     // another constructor for when the costumer is already registered and so no need for extra details

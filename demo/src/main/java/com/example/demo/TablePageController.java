@@ -1,13 +1,12 @@
 package com.example.demo;
 
 import com.example.demo.connectivity.Database;
+import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.util.Duration;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,6 +14,11 @@ import java.util.Objects;
 
 public class TablePageController {
 
+    @FXML
+    private RadioButton wheelChair;
+
+    @FXML
+    private Label allocateSuccess;
     @FXML
     private TextArea additionalInfoField;
 
@@ -62,6 +66,37 @@ public class TablePageController {
 
 }
 
+     public void allocationButton() {
+
+        allocateSuccess.setText("Customer has been seated!");
+         PauseTransition disappearingMessage = new PauseTransition(Duration.seconds(1));
+         disappearingMessage.setOnFinished(event -> allocateSuccess.setText(""));
+         disappearingMessage.play();
+
+         // insert information to the table
+         Database db = new Database("in2033t01_a", "CtYS1azKU-8");
+
+         String name = nameField.getText();
+         String phoneNumber = phoneNumberField.getText();
+         int guests = Integer.parseInt(guestsField.getValue());
+         String additionalInfo = additionalInfoField.getText();
+         int wheelChairNeeded = 0;
+         if (wheelChair.isSelected()) {
+             wheelChairNeeded = 1;
+         }
+
+
+         String query = "INSERT INTO Booking VALUES('%s',TIMESTAMP(CURRENT_DATE,SEC_TO_TIME(CURRENT_TIME))/1800)*1800),%s,%s,'%s');".formatted(phoneNumber, guests,wheelChairNeeded,additionalInfo);
+
+         nameField.clear();
+         phoneNumberField.clear();
+         guestsField.setValue(null);
+         initialTableField.setValue(null);
+         secondTableField.setValue(null);
+         thirdTableField.setValue(null);
+         additionalInfoField.clear();
+     }
+
     public void checkGuests() {
         // get the number of guests first
         int numGuests = Integer.parseInt(guestsField.getValue());
@@ -102,7 +137,7 @@ public class TablePageController {
         int numGuests = Integer.parseInt(guestsField.getValue());
         String initialTable = initialTableField.getValue();
 
-        if (numGuests > 2 && numGuests <= 4) {
+        if (numGuests > 2) {
             secondTableField.setDisable(false);
 
             // do the same as before but check the additional input for the first combo box
@@ -136,6 +171,8 @@ public class TablePageController {
             } catch (SQLException e) {
                 System.err.println(e.getMessage());
             }
+        } else {
+            buttonEnabled();
         }
     }
     public void checkSecond(ActionEvent actionEvent) {
@@ -177,9 +214,68 @@ public class TablePageController {
             } catch (SQLException e) {
                 System.err.println(e.getMessage());
             }
+        } else {
+            buttonEnabled();
         }
     }
 
     public void checkThird(ActionEvent actionEvent) {
-    }
+        buttonEnabled();
+     }
+
+     public void buttonEnabled() {
+         boolean disable = nameField.getText().isEmpty() || nameField.getText().trim().isEmpty()
+                 || phoneNumberField.getText().isEmpty() || phoneNumberField.getText().trim().isEmpty();
+         allocateButton.setDisable(disable);
+     }
+
+     public void fullFormName() {
+        // check if the other forms are filled in
+         boolean disable = false;
+
+         int numGuests = Integer.parseInt(guestsField.getValue());
+         switch(numGuests) {
+             case 1, 2 -> {
+                 disable = phoneNumberField.getText().isEmpty() || phoneNumberField.getText().trim().isEmpty()
+                 || initialTableField.getValue().isEmpty() || initialTableField.getValue().trim().isEmpty();
+             }
+             case 3 , 4 -> {
+                 disable = phoneNumberField.getText().isEmpty() || phoneNumberField.getText().trim().isEmpty()
+                         || initialTableField.getValue().isEmpty() || initialTableField.getValue().trim().isEmpty()
+                         || secondTableField.getValue().isEmpty() || secondTableField.getValue().trim().isEmpty();
+             }
+             case 5,6 ->{ disable = phoneNumberField.getText().isEmpty() || phoneNumberField.getText().trim().isEmpty()
+                     || initialTableField.getValue().isEmpty() || initialTableField.getValue().trim().isEmpty()
+                     || secondTableField.getValue().isEmpty() || secondTableField.getValue().trim().isEmpty()
+                     || thirdTableField.getValue().isEmpty() || thirdTableField.getValue().trim().isEmpty();
+         }}
+         allocateButton.setDisable(disable);
+     }
+
+     public void fullFormNumber() {
+         // check if the other forms are filled in
+         boolean disable = false;
+
+         int numGuests = Integer.parseInt(guestsField.getValue());
+         switch(numGuests) {
+             case 1, 2 -> {
+                 disable = nameField.getText().isEmpty() || nameField.getText().trim().isEmpty()
+                         || initialTableField.getValue().isEmpty() || initialTableField.getValue().trim().isEmpty();
+             }
+             case 3 , 4 -> {
+                 disable = nameField.getText().isEmpty() || nameField.getText().trim().isEmpty()
+                         || initialTableField.getValue().isEmpty() || initialTableField.getValue().trim().isEmpty()
+                         || secondTableField.getValue().isEmpty() || secondTableField.getValue().trim().isEmpty();
+             }
+             case 5,6 -> {
+                 disable = nameField.getText().isEmpty() || nameField.getText().trim().isEmpty()
+                     || initialTableField.getValue().isEmpty() || initialTableField.getValue().trim().isEmpty()
+                     || secondTableField.getValue().isEmpty() || secondTableField.getValue().trim().isEmpty()
+                     || thirdTableField.getValue().isEmpty() || thirdTableField.getValue().trim().isEmpty();
+             }
+
+         }
+         allocateButton.setDisable(disable);
+
+     }
 }
